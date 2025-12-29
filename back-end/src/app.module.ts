@@ -12,6 +12,7 @@ import { Post } from './post/entities/post.entity';
 import { Event } from './event/entities/event.entity';
 import { PostCommentModule } from './post-comment/post-comment.module';
 import { PostComment } from './post-comment/entities/post-comment.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { PostComment } from './post-comment/entities/post-comment.entity';
     UserAccountModule,
     PostModule,
     EventModule,
-    PostCommentModule
+    PostCommentModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
