@@ -1,6 +1,8 @@
 import { Event } from "src/event/entities/event.entity";
 import { Post } from "src/post/entities/post.entity";
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import bcrypt from "bcrypt";
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class UserAccount {
@@ -8,13 +10,14 @@ export class UserAccount {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({ unique: true })
     email: string;
 
+    @Exclude()
     @Column({ name: 'password_hash' })
     passwordHash: string;
 
-    @Column()
+    @Column({ unique: true })
     phone: string;
 
     @Column({ name: 'user_name' })
@@ -25,4 +28,13 @@ export class UserAccount {
 
     @OneToMany(() => Event, event => event.creator)
     events: Event[]
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    async hashPassword() {
+    if (this.passwordHash && !this.passwordHash.startsWith('$2')) { // evita double-hash
+        const salt = await bcrypt.genSalt(10);
+        this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
+    }
+}
 }
