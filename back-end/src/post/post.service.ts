@@ -1,0 +1,70 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Post } from './entities/post.entity';
+import { PostStatus } from './enum/post-status.enum';
+
+@Injectable()
+export class PostService {
+  constructor(@InjectRepository(Post) private readonly postRepository: Repository<Post>) {}
+
+  async createPost(createPostDto: CreatePostDto) {
+    const post = await this.postRepository.create(createPostDto);
+    return await this.postRepository.save(post);
+  }
+
+  async publishPost(id: string): Promise<Post> {
+    const post = await this.findOne(id);
+      
+    if (post.status === PostStatus.PUBLISHED) return post;
+    if (post.status !== PostStatus.DRAFT) {
+      throw new Error('Only draft posts can be published');
+    }
+
+    post.status = PostStatus.PUBLISHED;
+    post.publishedAt = new Date();
+
+    return this.postRepository.save(post);
+  }
+
+  async archivePost(id: string): Promise<Post> {
+    const post = await this.findOne(id);
+
+    if (post.status === PostStatus.ARCHIVED) {
+      throw new Error('Post is already archived');
+    }
+
+    post.status = PostStatus.ARCHIVED;
+
+    return this.postRepository.save(post);
+  }
+
+  async findAll(): Promise<Post[]> {
+    return await this.postRepository.find({ relations: ['author']});
+  }
+
+  async findOne(id: string): Promise<Post> {
+    const post = await this.postRepository.findOneOrFail({where: {id}, relations: ['comments', 'author']})
+
+    if (!post) throw new NotFoundException(`Post with id: ${id} not found`); 
+
+    return post;
+  }
+
+  async update(id: string, updatePostDto: UpdatePostDto) {
+    const post = await this.findOne(id);
+
+    if (post.status === PostStatus.ARCHIVED) {
+      throw new Error('Archived posts cannot be updated');
+    }
+
+    return await this.postRepository.save({...post, ...updatePostDto});
+  }
+
+  async remove(id: string): Promise<Post> {
+    const post = await this.findOne(id);
+    return this.postRepository.remove(post);
+  }
+}
