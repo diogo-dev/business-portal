@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { UserAccountService } from 'src/user-account/user-account.service';
 import bcrypt from "bcrypt";
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserAccountDto } from 'src/user-account/dto/create-user-account.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,5 +27,14 @@ export class AuthService {
         }
     }
 
-    // create the signup method
+    async signUp(createUserAccountDto: CreateUserAccountDto): Promise<{access_token: string}> {
+        // create the user account
+        const user = await this.userAccountService.create(createUserAccountDto);
+
+        // generate the jwt
+        const payload = {sub: user.id, userName: user.userName};
+        return {
+            access_token: await this.jwtService.signAsync(payload)
+        }
+    }
 }
