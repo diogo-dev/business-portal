@@ -3,6 +3,7 @@ import { PostCommentService } from './post-comment.service';
 import { CreatePostCommentDto } from './dto/create-post-comment.dto';
 import { UpdatePostCommentDto } from './dto/update-post-comment.dto';
 import type { UUID } from 'crypto';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller('post-comment')
 export class PostCommentController {
@@ -13,6 +14,7 @@ export class PostCommentController {
     return this.postCommentService.create(createPostCommentDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.postCommentService.findAll();

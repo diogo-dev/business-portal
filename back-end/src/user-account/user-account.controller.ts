@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserAccountService } from './user-account.service';
 import { CreateUserAccountDto } from './dto/create-user-account.dto';
 import { UpdateUserAccountDto } from './dto/update-user-account.dto';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller('user-account')
 export class UserAccountController {
