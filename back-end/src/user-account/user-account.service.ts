@@ -1,14 +1,19 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserAccountDto } from './dto/create-user-account.dto';
 import { UpdateUserAccountDto } from './dto/update-user-account.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccount } from './entities/user-account.entity';
 import { Repository } from 'typeorm';
+import { RoleService } from 'src/role/role.service';
 
 @Injectable()
 export class UserAccountService {
 
-  constructor(@InjectRepository(UserAccount) private readonly userAccountRepository: Repository<UserAccount>) {}
+  constructor(
+    @InjectRepository(UserAccount) 
+    private readonly userAccountRepository: Repository<UserAccount>,
+    private readonly roleService: RoleService
+  ) {}
 
   async create(createUserAccountDto: CreateUserAccountDto) {
     // verify if email already exists
@@ -29,8 +34,19 @@ export class UserAccountService {
       throw new ConflictException(`Phone number ${createUserAccountDto.phone} already in use`);
     }
 
-    const account = this.userAccountRepository.create(createUserAccountDto);
-    return await this.userAccountRepository.save(account);
+    const roleName = createUserAccountDto.role ?? 'user';
+    const role = await this.roleService.findByName(roleName);
+
+    if (!role) {
+      throw new NotFoundException(`Role ${roleName} not found`);
+    }
+
+    const newUserAccount = this.userAccountRepository.create({
+      ...createUserAccountDto,
+      roles: [role]
+    });
+
+    return await this.userAccountRepository.save(newUserAccount);
   }
 
   async findAll(): Promise<UserAccount[]> {
@@ -53,5 +69,9 @@ export class UserAccountService {
   async remove(id: string): Promise<UserAccount> {
     const account = await this.findOne(id);
     return await this.userAccountRepository.remove(account);
+  }
+
+  async count(): Promise<number> {
+        return this.userAccountRepository.count();
   }
 }

@@ -8,10 +8,10 @@ export class Role {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ unique: true })
+    @Column({ unique: true, length: 50 })
     name: string;
 
-    @Column({ nullable: true})
+    @Column({ nullable: true, length: 255 })
     description: string;
 
     @ManyToMany(() => Permission, permission => permission.roles)

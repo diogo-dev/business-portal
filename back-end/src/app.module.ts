@@ -16,6 +16,10 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './role/roles.guard';
 import { PermissionsGuard } from './permission/permissions.guard';
+import { RoleService } from './role/role.service';
+import { RoleModule } from './role/role.module';
+import { PermissionService } from './permission/permission.service';
+import { PermissionModule } from './permission/permission.module';
 
 @Module({
   imports: [
@@ -28,7 +32,9 @@ import { PermissionsGuard } from './permission/permissions.guard';
     PostModule,
     EventModule,
     PostCommentModule,
-    AuthModule
+    AuthModule,
+    RoleModule,
+    PermissionModule
   ],
   controllers: [AppController],
   providers: [AppService,
