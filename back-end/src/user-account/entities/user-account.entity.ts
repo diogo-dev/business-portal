@@ -1,8 +1,9 @@
 import { Event } from "src/event/entities/event.entity";
 import { Post } from "src/post/entities/post.entity";
-import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import bcrypt from "bcrypt";
 import { Exclude } from "class-transformer";
+import { Role } from "src/role/role.entity";
 
 @Entity()
 export class UserAccount {
@@ -28,6 +29,12 @@ export class UserAccount {
 
     @OneToMany(() => Event, event => event.creator)
     events: Event[]
+
+    @ManyToMany(() => Role, role => role.users)
+    @JoinTable({
+        name: 'user_roles'
+    })
+    roles: Role[]
 
     @BeforeInsert()
     @BeforeUpdate()

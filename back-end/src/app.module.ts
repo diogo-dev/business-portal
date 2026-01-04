@@ -13,6 +13,9 @@ import { Event } from './event/entities/event.entity';
 import { PostCommentModule } from './post-comment/post-comment.module';
 import { PostComment } from './post-comment/entities/post-comment.entity';
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './role/roles.guard';
+import { PermissionsGuard } from './permission/permissions.guard';
 
 @Module({
   imports: [
@@ -21,7 +24,6 @@ import { AuthModule } from './auth/auth.module';
       envFilePath: '.env'
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
-    TypeOrmModule.forFeature([UserAccount, Post, Event, PostComment]),
     UserAccountModule,
     PostModule,
     EventModule,
@@ -29,7 +31,20 @@ import { AuthModule } from './auth/auth.module';
     AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthModule
+    },
+     {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+     },
+     {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard
+     }
+  ],
 })
 
 export class AppModule {}
