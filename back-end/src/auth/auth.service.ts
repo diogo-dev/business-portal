@@ -16,7 +16,7 @@ export class AuthService {
     async signIn(signInDto: SignInDto): Promise<{access_token: string}> {
         try {
             // search for user
-            const user = await this.userAccountService.findOneByUserName(signInDto.userName);
+            const user = await this.userAccountService.findOneByEmail(signInDto.email);
 
             // verify the password
             const passwordMatches = await bcrypt.compare(signInDto.passwordHash, user.passwordHash);
@@ -25,7 +25,7 @@ export class AuthService {
             // generate the jwt
             const payload = {
                 sub: user.id, 
-                userName: user.userName,
+                email: user.email,
                 roles: user.roles
             };
             return {
@@ -33,7 +33,7 @@ export class AuthService {
             }
         } catch (error) {
             if (error instanceof EntityNotFoundError) {
-                throw new NotFoundException(`User ${signInDto.userName} not found`);
+                throw new NotFoundException(`User ${signInDto.email} not found`);
             }
             if (error instanceof UnauthorizedException) {
                 throw error;
@@ -49,7 +49,7 @@ export class AuthService {
         // generate the jwt
         const payload = {
             sub: user.id, 
-            userName: user.userName,
+            email: user.email,
             roles: user.roles
         };
         return {
