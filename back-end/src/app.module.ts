@@ -14,6 +14,7 @@ import { RolesGuard } from './role/roles.guard';
 import { PermissionsGuard } from './permission/permissions.guard';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
+import { AuthGuard } from './auth/auth.guard';
 
 @Module({
   imports: [
@@ -32,6 +33,10 @@ import { PermissionModule } from './permission/permission.module';
   ],
   controllers: [AppController],
   providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard
+    },
      {
       provide: APP_GUARD,
       useClass: RolesGuard
