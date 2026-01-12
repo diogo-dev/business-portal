@@ -58,7 +58,7 @@ export class UserAccountService {
   }
 
   async findOneByUserName(userName: string): Promise<UserAccount> {
-    return await this.userAccountRepository.findOneOrFail({ where: { userName } , relations: ['posts', 'events'] })
+    return await this.userAccountRepository.findOneOrFail({ where: { userName } , relations: ['posts', 'events', 'roles'] })
   }
 
   async update(id: string, updateUserAccountDto: UpdateUserAccountDto): Promise<UserAccount> {
