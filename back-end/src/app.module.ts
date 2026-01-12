@@ -7,19 +7,14 @@ import { UserAccountModule } from './user-account/user-account.module';
 import { PostModule } from './post/post.module';
 import { EventModule } from './event/event.module';
 import { dataSourceOptions } from './database/data-source'
-import { UserAccount } from './user-account/entities/user-account.entity';
-import { Post } from './post/entities/post.entity';
-import { Event } from './event/entities/event.entity';
 import { PostCommentModule } from './post-comment/post-comment.module';
-import { PostComment } from './post-comment/entities/post-comment.entity';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './role/roles.guard';
 import { PermissionsGuard } from './permission/permissions.guard';
-import { RoleService } from './role/role.service';
 import { RoleModule } from './role/role.module';
-import { PermissionService } from './permission/permission.service';
 import { PermissionModule } from './permission/permission.module';
+import { AuthGuard } from './auth/auth.guard';
 
 @Module({
   imports: [
@@ -40,7 +35,7 @@ import { PermissionModule } from './permission/permission.module';
   providers: [AppService,
     {
       provide: APP_GUARD,
-      useClass: AuthModule
+      useClass: AuthGuard
     },
      {
       provide: APP_GUARD,
