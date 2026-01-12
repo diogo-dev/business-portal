@@ -3,6 +3,8 @@ import { UserAccountService } from 'src/user-account/user-account.service';
 import bcrypt from "bcrypt";
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserAccountDto } from 'src/user-account/dto/create-user-account.dto';
+import { SignInDto } from 'src/user-account/dto/sign-in.dto';
+import { EntityNotFoundError } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -11,19 +13,32 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async signIn(userName: string, password: string): Promise<{access_token: string}> {
-        // search for user
-        const user = await this.userAccountService.findOneByUserName(userName);
-        if (!user) throw new NotFoundException(`User ${userName} not found`);
+    async signIn(signInDto: SignInDto): Promise<{access_token: string}> {
+        try {
+            // search for user
+            const user = await this.userAccountService.findOneByUserName(signInDto.userName);
 
-        // verify the password
-        const passwordMatches = await bcrypt.compare(password, user.passwordHash);
-        if (!passwordMatches) throw new UnauthorizedException();
+            // verify the password
+            const passwordMatches = await bcrypt.compare(signInDto.passwordHash, user.passwordHash);
+            if (!passwordMatches) throw new UnauthorizedException('Invalid credentials');
 
-        // generate the jwt
-        const payload = {sub: user.id, userName: user.userName};
-        return {
-            access_token: await this.jwtService.signAsync(payload)
+            // generate the jwt
+            const payload = {
+                sub: user.id, 
+                userName: user.userName,
+                roles: user.roles
+            };
+            return {
+                access_token: await this.jwtService.signAsync(payload)
+            }
+        } catch (error) {
+            if (error instanceof EntityNotFoundError) {
+                throw new NotFoundException(`User ${signInDto.userName} not found`);
+            }
+            if (error instanceof UnauthorizedException) {
+                throw error;
+            }
+            throw error;
         }
     }
 
@@ -32,7 +47,11 @@ export class AuthService {
         const user = await this.userAccountService.create(createUserAccountDto);
 
         // generate the jwt
-        const payload = {sub: user.id, userName: user.userName};
+        const payload = {
+            sub: user.id, 
+            userName: user.userName,
+            roles: user.roles
+        };
         return {
             access_token: await this.jwtService.signAsync(payload)
         }
