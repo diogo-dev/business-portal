@@ -11,8 +11,8 @@ import { Roles } from 'src/decorators/roles.decorator';
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
-  @Roles('admin')
   @Post()
+  @Roles('admin')
   create(@Body() createEventDto: CreateEventDto) {
     return this.eventService.create(createEventDto);
   }
@@ -29,14 +29,14 @@ export class EventController {
     return this.eventService.findOne(id);
   }
 
-  @Roles('admin')
   @Patch(':id')
+  @Roles('admin')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() dto: UpdateEventDto) {
     return this.eventService.update(id, dto);
   }
 
-  @Roles('admin')
   @Delete(':id')
+  @Roles('admin')
   remove(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.eventService.remove(id);
   }

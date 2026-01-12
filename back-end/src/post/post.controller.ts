@@ -10,8 +10,8 @@ import { Roles } from 'src/decorators/roles.decorator';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @Roles('admin')
   @Post()
+  @Roles('admin')
   create(@Body() createPostDto: CreatePostDto) {
     return this.postService.createPost(createPostDto);
   }
@@ -28,26 +28,26 @@ export class PostController {
     return this.postService.findOne(id);
   }
 
-  @Roles('admin')
   @Patch(':id')
+  @Roles('admin')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(id, updatePostDto);
   }
 
-  @Roles('admin')
   @Delete(':id')
+  @Roles('admin')
   remove(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.postService.remove(id);
   }
 
-  @Roles('admin')
   @Patch(':id/publish')
+  @Roles('admin')
   publish(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.postService.publishPost(id);
   }
 
-  @Roles('admin')
   @Patch(':id/archive')
+  @Roles('admin')
   archive(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.postService.archivePost(id);
   }
