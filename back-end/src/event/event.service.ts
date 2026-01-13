@@ -2,15 +2,22 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { Event } from './entities/event.entity';
+import { UserAccountService } from 'src/user-account/user-account.service';
 
 @Injectable()
 export class EventService {
-  constructor(@InjectRepository(Event) private readonly eventRepository: Repository<Event>) {}
+  constructor(
+    @InjectRepository(Event) 
+    private readonly eventRepository: Repository<Event>,
+    private readonly userAccountService: UserAccountService
+  ) {}
 
-  async create(dto: CreateEventDto): Promise<Event> {
-    const event = this.eventRepository.create(dto)
+  async create(dto: CreateEventDto, creatorId: string): Promise<Event> {
+    const creator = await this.userAccountService.findOne(creatorId);
+
+    const event = this.eventRepository.create({ ...dto, creator: creator });
     return await this.eventRepository.save(event);
   }
 
@@ -19,11 +26,21 @@ export class EventService {
   }
 
   async findOne(id: string): Promise<Event> {
-    const event =  await this.eventRepository.findOneOrFail({ where: { id }, relations: ['creator'] });
+    try {
+      return await this.eventRepository.findOneOrFail({ where: { id }, relations: ['creator'] });
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(`Event with ID ${id} not found`);
+      }
+     throw error;
+    }
 
-    if (!event) throw new NotFoundException(`Event with id ${id} not found!`);
-
-    return event;
+    // if I chose to use findOne instead of findOneOrFail
+    // const event = await this.eventRepository.findOne({ where: { id } });
+    // if (!event) {
+    //   throw new NotFoundException(`Event with ID ${id} not found`);
+    // }
+    // return event;
   }
 
   async update(id: string, dto: UpdateEventDto): Promise<Event> {

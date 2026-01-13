@@ -1,17 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostCommentDto } from './dto/create-post-comment.dto';
 import { UpdatePostCommentDto } from './dto/update-post-comment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostComment } from './entities/post-comment.entity';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
+import { PostService } from 'src/post/post.service';
+import { UserAccountService } from 'src/user-account/user-account.service';
 
 @Injectable()
 export class PostCommentService {
 
-  constructor(@InjectRepository(PostComment) private readonly postCommentRepository: Repository<PostComment>) {}
+  constructor(
+    @InjectRepository(PostComment) 
+    private readonly postCommentRepository: Repository<PostComment>,
+    private readonly postService: PostService,
+    private readonly userAccountService: UserAccountService
+  ) {}
 
-  async create(createPostCommentDto: CreatePostCommentDto): Promise<PostComment> {
-    const comment = this.postCommentRepository.create(createPostCommentDto);
+  async create(createPostCommentDto: CreatePostCommentDto, authorId: string): Promise<PostComment> {
+    // search for post
+    const post = await this.postService.findOne(createPostCommentDto.postId);
+
+    // search for author by id
+    const author = await this.userAccountService.findOne(authorId);
+
+    // create post comment with the post object
+    const comment = this.postCommentRepository.create({
+      content: createPostCommentDto.content,
+      post: post,
+      author: author
+    });
+    
     return await this.postCommentRepository.save(comment);
   }
 
@@ -29,7 +48,14 @@ export class PostCommentService {
   }
 
   async findOne(id: string): Promise<PostComment> {
-    return await this.postCommentRepository.findOneOrFail({ where: { id }, relations: ['author', 'post'] });
+    try {
+      return await this.postCommentRepository.findOneOrFail({ where: { id }, relations: ['author', 'post'] });
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(`Post comment with ID ${id} not found`);
+      }
+      throw error;
+    }
   }
 
   async update(id: string, updatePostCommentDto: UpdatePostCommentDto): Promise<PostComment> {

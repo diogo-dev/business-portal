@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Request } from '@nestjs/common';
 import { PostCommentService } from './post-comment.service';
 import { CreatePostCommentDto } from './dto/create-post-comment.dto';
 import { UpdatePostCommentDto } from './dto/update-post-comment.dto';
@@ -12,8 +12,8 @@ export class PostCommentController {
 
   @Post()
   @Roles('admin', 'user')
-  create(@Body() createPostCommentDto: CreatePostCommentDto) {
-    return this.postCommentService.create(createPostCommentDto);
+  create(@Body() createPostCommentDto: CreatePostCommentDto, @Request() req) {
+    return this.postCommentService.create(createPostCommentDto, req.user.sub);
   }
 
   @Public()
@@ -23,6 +23,7 @@ export class PostCommentController {
   }
 
   @Get(':id')
+  @Roles('admin')
   findOne(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.postCommentService.findOne(id);
   }

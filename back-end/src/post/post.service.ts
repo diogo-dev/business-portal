@@ -2,16 +2,26 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Entity, EntityNotFoundError, Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { PostStatus } from './enum/post-status.enum';
+import { UserAccountService } from 'src/user-account/user-account.service';
 
 @Injectable()
 export class PostService {
-  constructor(@InjectRepository(Post) private readonly postRepository: Repository<Post>) {}
+  constructor(
+    @InjectRepository(Post) 
+    private readonly postRepository: Repository<Post>,
+    private readonly userAccountService: UserAccountService
+  ) {}
 
-  async createPost(createPostDto: CreatePostDto) {
-    const post = await this.postRepository.create(createPostDto);
+  async createPost(createPostDto: CreatePostDto, authorId: string) {
+    // search for author by id
+    const author = await this.userAccountService.findOne(authorId);
+
+    // create post with the author object
+    const post  = await this.postRepository.create({...createPostDto, author: author});
+
     return await this.postRepository.save(post);
   }
 
@@ -46,11 +56,15 @@ export class PostService {
   }
 
   async findOne(id: string): Promise<Post> {
-    const post = await this.postRepository.findOneOrFail({where: {id}, relations: ['comments', 'author']})
-
-    if (!post) throw new NotFoundException(`Post with id: ${id} not found`); 
-
-    return post;
+    try {
+      const post = await this.postRepository.findOneOrFail({where: {id}, relations: ['comments', 'author']}) 
+      return post;
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(`Post with id ${id} not found`);
+      }
+      throw error;
+    }
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {

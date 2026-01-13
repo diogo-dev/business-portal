@@ -3,7 +3,7 @@ import { CreateUserAccountDto } from './dto/create-user-account.dto';
 import { UpdateUserAccountDto } from './dto/update-user-account.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccount } from './entities/user-account.entity';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { RoleService } from 'src/role/role.service';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class UserAccountService {
       where: { email: createUserAccountDto.email } 
     });
 
-    if (existingEmail ) {
+    if (existingEmail) {
       throw new ConflictException(`Email ${createUserAccountDto.email} already in use`);
     }
 
@@ -54,11 +54,25 @@ export class UserAccountService {
   }
 
   async findOne(id: string): Promise<UserAccount> {
-    return await this.userAccountRepository.findOneOrFail({ where: { id } , relations: ['posts', 'events'] })
+    try {
+      return await this.userAccountRepository.findOneOrFail({ where: { id } });
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(`User with ID ${id} not found`);
+      }
+      throw error;
+    }
   }
 
   async findOneByEmail(email: string): Promise<UserAccount> {
-    return await this.userAccountRepository.findOneOrFail({ where: { email } , relations: ['posts', 'events', 'roles'] })
+    try {
+      return await this.userAccountRepository.findOneOrFail({ where: { email } , relations: ['posts', 'events', 'roles'] })
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(`User with email ${email} not found`);
+      }
+      throw error;
+    }
   }
 
   async update(id: string, updateUserAccountDto: UpdateUserAccountDto): Promise<UserAccount> {
