@@ -15,6 +15,7 @@ import { PermissionsGuard } from './permission/permissions.guard';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuthGuard } from './auth/auth.guard';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { AuthGuard } from './auth/auth.guard';
     PostCommentModule,
     AuthModule,
     RoleModule,
-    PermissionModule
+    PermissionModule,
+    UploadModule
   ],
   controllers: [AppController],
   providers: [AppService,

@@ -22,6 +22,9 @@ export class Event {
   @Column()
   location: string;
 
+  @Column({ name: 'cover_image_url', nullable: true })
+  coverImageUrl: string;
+
   @Column({ type: 'timestamptz', name: 'starts_at' })
   startsAt: Date;
 

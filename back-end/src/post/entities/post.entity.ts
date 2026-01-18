@@ -21,6 +21,9 @@ export class Post {
     @Column({ type: 'enum', enum: PostStatus, default: PostStatus.DRAFT})
     status: PostStatus;
 
+    @Column({ name: 'cover_image_url', nullable: true })
+    coverImageUrl: string;
+
     @Column({ type: 'timestamptz', name: 'published_at', nullable: true })
     publishedAt: Date;
 
