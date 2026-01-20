@@ -55,7 +55,7 @@ export class UserAccountService {
 
   async findOne(id: string): Promise<UserAccount> {
     try {
-      return await this.userAccountRepository.findOneOrFail({ where: { id } });
+      return await this.userAccountRepository.findOneOrFail({ where: { id }, relations: ['roles'] });
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
         throw new NotFoundException(`User with ID ${id} not found`);

@@ -56,4 +56,8 @@ export class AuthService {
             access_token: await this.jwtService.signAsync(payload)
         }
     }
+
+    async getProfile(userId: string) {
+        return this.userAccountService.findOne(userId);
+    }
 }
