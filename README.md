@@ -19,6 +19,7 @@ SERVER:
 - NestJS
 - TypeORM
 - Postgres
+- AWS S3
 
 CLIENT:
 - React
