@@ -54,6 +54,20 @@ export function patch(route: string, body?: any, token?: string | null) {
   });
 }
 
+export function patchFormData(route: string, formData: FormData, token?: string | null) {
+  const headers: Record<string, string> = {};
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  return fetch(urlOf(route), {
+    method: "PATCH",
+    headers,
+    body: formData,
+  });
+}
+
 export function del(route: string, token?: string | null) {
   const headers: Record<string, string> = {};
 
