@@ -130,6 +130,7 @@ export function PostForm({ isLoading, isSuccess, setIsLoading, setIsSuccess, onS
             title="Post Title"
             inputType="text"
             placeholder="Enter the title of your post"
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
@@ -137,6 +138,7 @@ export function PostForm({ isLoading, isSuccess, setIsLoading, setIsSuccess, onS
             title="Post Summary"
             inputType="text"
             placeholder="Enter a brief summary of your post"
+            value={summary}
             onChange={(e) => setSummary(e.target.value)}
           />
         </div>
@@ -145,6 +147,7 @@ export function PostForm({ isLoading, isSuccess, setIsLoading, setIsSuccess, onS
           <TextareaCard 
             title="Post Content"
             placeholder="Write the content of your post here..."
+            value={content}
             onChange={(e) => setContent(e.target.value)}
           />
         </div>

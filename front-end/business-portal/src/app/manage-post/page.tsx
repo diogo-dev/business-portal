@@ -1,22 +1,60 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './page.module.css';
 import { PostForm } from '../_components/PostForm/PostForm';
+import { get } from '../api';
+import { PostGrid } from '../_components/PostGrid/PostGrid';
+
+interface Post {
+  id: string;
+  title: string;
+  content: string;
+  summary: string;
+  coverImageUrl: string;
+  status: string;
+  createdAt: string;
+  publishedAt?: string;
+}
 
 export default function ManagePost() {
-  const [activeTab, setActiveTab] = useState<'form' | 'created' | 'published' | 'archived'>('form');
+  const [activeTab, setActiveTab] = useState<'form' | 'draft' | 'published' | 'archived'>('form');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(false);
 
-  const handleTabChange = (tab: 'form' | 'created' | 'published' | 'archived') => {
+  useEffect(() => {
+    if (activeTab !== 'form') {
+      fetchPosts(activeTab);
+    }
+  }, [activeTab]);
+
+  const fetchPosts = async (status: string) => {
+    setIsLoadingPosts(true);
+    try {
+      const response = await get(`/post/top?status=${status}`);
+      if (response.ok) {
+        const data = await response.json();
+        setPosts(data);
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    } finally {
+      setIsLoadingPosts(false);
+    }
+  };
+
+
+  const handleTabChange = (tab: 'form' | 'draft' | 'published' | 'archived') => {
     setActiveTab(tab);
     setIsLoading(false);
     setIsSuccess(false);
   };
 
   const handlePostSuccess = () => {
-    setActiveTab('created');
+    setActiveTab('draft');
+    fetchPosts('draft'); // Update the draft posts after a successful post creation
   };
 
   return (
@@ -38,8 +76,8 @@ export default function ManagePost() {
           Post Form
         </button>
         <button
-          className={`${styles.tab} ${activeTab === 'created' ? styles.tabActive : ''}`}
-          onClick={() => handleTabChange('created')}
+          className={`${styles.tab} ${activeTab === 'draft' ? styles.tabActive : ''}`}
+          onClick={() => handleTabChange('draft')}
         >
           Created Post
         </button>
@@ -71,9 +109,67 @@ export default function ManagePost() {
           </>
         )}
 
-        {activeTab === 'created' && (
+        {activeTab === 'draft' && (
           <div className={styles.previewContainer}>
-            <p className={styles.previewText}>Visualização da publicação será exibida aqui</p>
+            {isLoadingPosts ? (
+              <div className={styles.noDataMessageStyle}>
+                <p>Uploading posts...</p>
+              </div>
+            ) : posts.length === 0 ? (
+              <div className={styles.noDataMessageStyle}>
+                <p>No posts created yet.</p>
+              </div>
+            ) : (
+              <PostGrid 
+                posts={posts} 
+                postStatus="draft" 
+                isLoading={isLoadingPosts} 
+                isSuccess={isSuccess} 
+                setIsLoading={setIsLoading}
+                setIsSuccess={setIsSuccess}
+                fetchPosts={() => fetchPosts('draft')}
+              />
+            )}
+          </div>
+        )}
+
+        {activeTab === 'published' && (
+          <div className={styles.previewContainer}>
+            {isLoadingPosts ? (
+              <div className={styles.noDataMessageStyle}>
+                <p>Loading posts...</p>
+              </div>
+            ) : posts.length === 0 ? (
+              <div className={styles.noDataMessageStyle}>
+                <p>No posts published yet.</p>
+              </div>
+            ) : (
+              <PostGrid 
+                posts={posts} 
+                postStatus="published" 
+                isLoading={isLoadingPosts} 
+                isSuccess={isSuccess} 
+                setIsLoading={setIsLoading}
+                setIsSuccess={setIsSuccess}
+                fetchPosts={() => fetchPosts('published')}
+              />
+            )}
+          </div>
+        )}
+
+        {activeTab === 'archived' && (
+          <div className={styles.previewContainer}>
+            {isLoadingPosts ? (
+              <div className={styles.noDataMessageStyle}>
+                <p>Loading posts...</p>
+              </div>
+            ) : posts.length === 0 ? (
+              <div className={styles.noDataMessageStyle}>
+                <p>No posts archived yet.</p>
+              </div>
+            ) : (
+              <PostGrid posts={posts} postStatus="archived" />
+            )}
           </div>
         )}
       </div>

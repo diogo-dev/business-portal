@@ -78,3 +78,55 @@
     height: auto;
     display: block;
 }
+
+.errorContainer {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: #fee;
+    border-radius: 8px;
+}
+
+.errorMessage {
+    margin: 0;
+    color: #c33;
+    font-size: 0.9rem;
+}
+
+.fileNameContainer {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: #e8f5e9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.fileName {
+    margin: 0;
+    color: #2e7d32;
+    font-size: 0.9rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.removeButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.2s ease;
+    border-radius: 4px;
+}
+
+.removeButton:hover {
+    color: black;
+    background: rgba(145, 144, 144, 0.1);
+}

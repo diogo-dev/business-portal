@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react';
 import styles from './UploadCard.module.css';
+import { IoTrashBin } from "react-icons/io5";
+import { IoCheckmarkSharp } from "react-icons/io5";
 
 // Validation settings
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
@@ -43,6 +45,16 @@ export function UploadCard({ onFileChange }: UploadCardProps) {
 
     setFileName(file.name);
     onFileChange?.(file);
+  };
+
+  const handleRemoveFile = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFileName(null);
+    setError(null);
+    onFileChange?.(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +124,14 @@ export function UploadCard({ onFileChange }: UploadCardProps) {
 
       {fileName && (
         <div className={styles.fileNameContainer}>
-          <p className={styles.fileName}>✅ {fileName}</p>
+          <p className={styles.fileName}><IoCheckmarkSharp /> {fileName}</p>
+          <button 
+            className={styles.removeButton}
+            onClick={handleRemoveFile}
+            aria-label="Remove file"
+          >
+            <IoTrashBin />
+          </button>
         </div>
       )}
     </div>

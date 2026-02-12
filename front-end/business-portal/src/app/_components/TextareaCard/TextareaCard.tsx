@@ -3,6 +3,7 @@ import styles from './TextareaCard.module.css';
 interface TextareaCardProps {
   title: string;
   placeholder?: string;
+  value?: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
@@ -17,6 +18,7 @@ export function TextareaCard(props: TextareaCardProps) {
 				<textarea
           className={styles.cardTextarea}
           placeholder={props.placeholder}
+          value={props.value}
           onChange={props.onChange}
         />
 			</div>

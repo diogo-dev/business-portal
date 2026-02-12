@@ -70,7 +70,6 @@
   padding: 2rem;
   background: #f9fafb;
   border-radius: 0.5rem;
-  text-align: center;
 }
 
 .previewText {
@@ -78,7 +77,13 @@
   font-size: 1rem;
 }
 
-/* Responsive Design */
+.noDataMessageStyle {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -96,4 +101,5 @@
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
   }
+
 }
