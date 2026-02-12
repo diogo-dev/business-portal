@@ -51,30 +51,32 @@ export function Header() {
             {isAuthenticated ? (
                 <>
                   <div className={styles.middleSection}>
-                    <a href="#about" className={styles.link}>About</a>
+                    <a href="#home" className={styles.link}>Home</a>
                     <a href="#events" className={styles.link}>Events</a>
                     <a href="#blog" className={styles.link}>Blog</a>
+                    <a href="#about" className={styles.link}>About</a>
                     <a href="#contact" className={styles.link}>Contact</a>
                   </div>
-              
-                <div className={styles.rightSection}>
-                  <span className={styles.userName}>Hello, {user?.userName}</span>
-                  <button 
-                    className={styles.logoutButton} 
-                    onClick={logout}
-                    > 
-                      <FiLogOut /> 
-                      Log out
-                  </button>
-                </div>  
+                
+                  <div className={styles.rightSection}>
+                    <span className={styles.userName}>Hello, {user?.userName}</span>
+                    <button 
+                      className={styles.logoutButton} 
+                      onClick={logout}
+                      > 
+                        <FiLogOut /> 
+                        Log out
+                    </button>
+                  </div>  
           
                 </>
             ) : (
               <>
                 <div className={styles.middleSection}>
-                  <a href="#about" className={styles.link}>About</a>
+                  <a href="#home" className={styles.link}>Home</a>
                   <a href="#events" className={styles.link}>Events</a>
                   <a href="#blog" className={styles.link}>Blog</a>
+                  <a href="#about" className={styles.link}>About</a>
                   <a href="#contact" className={styles.link}>Contact</a>
                 </div>
               
