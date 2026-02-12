@@ -1,0 +1,16 @@
+services:
+  database:
+    image: postgres:15
+    container_name: business-portal-database
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "${DB_PORT}:${LOCAL_DB_PORT}"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
+    name: business-portal-data

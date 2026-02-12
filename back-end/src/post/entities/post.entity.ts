@@ -1,7 +1,8 @@
 import { UserAccount } from "src/user-account/entities/user-account.entity";
-import { Entity, Column,  PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, Column,  PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinTable, ManyToMany } from "typeorm";
 import { PostStatus } from "../enum/post-status.enum";
 import { PostComment } from "src/post-comment/entities/post-comment.entity";
+import { Category } from "src/category/entities/category.entity";
 
 @Entity()
 export class Post {
@@ -36,6 +37,16 @@ export class Post {
     @OneToMany(() => PostComment, comment => comment.post)
     comments: PostComment[];
 
-    @ManyToOne(() => UserAccount, author => author.posts, {nullable: true, onDelete: 'SET NULL'})
+    @ManyToOne(() => UserAccount, author => author.posts, {nullable: true, onDelete: 'SET NULL', eager: true })
     author: UserAccount;
+
+    @ManyToMany(() => Category, category => category.posts, { eager: true })
+    @JoinTable(
+        {
+            name: 'post_categories',
+            joinColumn: { name: 'post_id', referencedColumnName: 'id' },
+            inverseJoinColumn: { name: 'category_id', referencedColumnName: 'id' }
+        }
+    )
+    categories: Category[];
 }

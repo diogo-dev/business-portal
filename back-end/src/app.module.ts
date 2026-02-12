@@ -16,6 +16,7 @@ import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuthGuard } from './auth/auth.guard';
 import { UploadModule } from './upload/upload.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { UploadModule } from './upload/upload.module';
     AuthModule,
     RoleModule,
     PermissionModule,
-    UploadModule
+    UploadModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService,

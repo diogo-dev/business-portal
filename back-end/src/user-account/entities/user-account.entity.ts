@@ -1,9 +1,10 @@
 import { Event } from "src/event/entities/event.entity";
 import { Post } from "src/post/entities/post.entity";
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import bcrypt from "bcrypt";
 import { Exclude } from "class-transformer";
 import { Role } from "src/role/role.entity";
+import { Profile } from "./profile.entity";
 
 @Entity()
 export class UserAccount {
@@ -18,9 +19,6 @@ export class UserAccount {
     @Column({ name: 'password_hash' })
     passwordHash: string;
 
-    @Column({ unique: true })
-    phone: string;
-
     @Column({ name: 'user_name' })
     userName: string;
 
@@ -30,11 +28,15 @@ export class UserAccount {
     @OneToMany(() => Event, event => event.creator)
     events: Event[]
 
-    @ManyToMany(() => Role, role => role.users)
+    @ManyToMany(() => Role, role => role.users, { eager: true })
     @JoinTable({
         name: 'user_roles'
     })
     roles: Role[]
+
+    @OneToOne(() => Profile, profile => profile.user, { cascade: true})
+    @JoinColumn({name: 'profile_id'})
+    profile: Profile;
 
     @BeforeInsert()
     @BeforeUpdate()

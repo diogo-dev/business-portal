@@ -15,7 +15,7 @@ export class UserAccountService {
     private readonly roleService: RoleService
   ) {}
 
-  async create(createUserAccountDto: CreateUserAccountDto) {
+  verifyCreateUserAccountDto = async (createUserAccountDto: CreateUserAccountDto) => {
     // verify if email already exists
     const existingEmail = await this.userAccountRepository.findOne({ 
       where: { email: createUserAccountDto.email } 
@@ -26,24 +26,52 @@ export class UserAccountService {
     }
 
     // verify if phone number already exists
-    const existingPhoneNumber = await this.userAccountRepository.findOne({ 
-      where: { phone: createUserAccountDto.phone } 
-    });
+    const existingPhoneNumber = await this.userAccountRepository
+      .createQueryBuilder('user')
+      .innerJoinAndSelect('user.profile', 'profile')
+      .where('profile.phone = :phone', { phone: createUserAccountDto.phone })
+      .getOne();
 
     if (existingPhoneNumber) {
       throw new ConflictException(`Phone number ${createUserAccountDto.phone} already in use`);
     }
 
-    const roleName = createUserAccountDto.role ?? 'user';
-    const role = await this.roleService.findByName(roleName);
+    const roleNames = createUserAccountDto.roleNames ?? ['user'];
+    
+    const roles = await Promise.all(
+      roleNames.map( async (roleName) => {
+        const role = await this.roleService.findByName(roleName);
+        if (!role) {
+          throw new NotFoundException(`Role ${roleName} not found`);
+        }
+        return role;
+      })
+    )
 
-    if (!role) {
-      throw new NotFoundException(`Role ${roleName} not found`);
-    }
+    return roles;
+  }
+
+  async create(createUserAccountDto: CreateUserAccountDto) {
+    const roles = await this.verifyCreateUserAccountDto(createUserAccountDto);    
 
     const newUserAccount = this.userAccountRepository.create({
       ...createUserAccountDto,
-      roles: [role]
+      profile: {
+        // default profile values
+        age: 18,
+        dob: new Date(),
+        bio: '',
+        avatarUrl: '',
+        phone: createUserAccountDto.phone,
+        postalCode: '',
+        city: '',
+        state: '',
+        country: '',
+        socialLinks: [],
+        occupation: '',
+        gender: 'other',
+      },
+      roles: roles
     });
 
     return await this.userAccountRepository.save(newUserAccount);
@@ -55,7 +83,7 @@ export class UserAccountService {
 
   async findOne(id: string): Promise<UserAccount> {
     try {
-      return await this.userAccountRepository.findOneOrFail({ where: { id }, relations: ['roles'] });
+      return await this.userAccountRepository.findOneOrFail({ where: { id }, relations: ['profile'] });
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
         throw new NotFoundException(`User with ID ${id} not found`);
@@ -66,7 +94,7 @@ export class UserAccountService {
 
   async findOneByEmail(email: string): Promise<UserAccount> {
     try {
-      return await this.userAccountRepository.findOneOrFail({ where: { email } , relations: ['posts', 'events', 'roles'] })
+      return await this.userAccountRepository.findOneOrFail({ where: { email } , relations: ['posts', 'events', 'profile'] })
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
         throw new NotFoundException(`User with email ${email} not found`);

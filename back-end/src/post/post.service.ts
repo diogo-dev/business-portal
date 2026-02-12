@@ -65,7 +65,7 @@ export class PostService {
   }
 
   async findAll(): Promise<Post[]> {
-    return await this.postRepository.find({ relations: ['author']});
+    return await this.postRepository.find();
   }
 
   async findTopPosts(status: PostStatus): Promise<Post[]> {
@@ -80,7 +80,7 @@ export class PostService {
 
   async findOne(id: string): Promise<Post> {
     try {
-      const post = await this.postRepository.findOneOrFail({where: {id}, relations: ['comments', 'author']}) 
+      const post = await this.postRepository.findOneOrFail({where: {id}, relations: ['comments']}) 
       return post;
     } catch (error) {
       if (error instanceof EntityNotFoundError) {

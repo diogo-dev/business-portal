@@ -28,7 +28,7 @@ export default async function seedUsers(userAccountService: UserAccountService, 
             passwordHash: '123456',
             phone: '5544999999001',
             userName: 'admin',
-            role: 'admin'
+            role: ['admin']
         },
         {
             email: 'user@example.com',

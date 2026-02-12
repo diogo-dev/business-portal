@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsOptional } from "class-validator";
+import { IsString, IsNotEmpty, IsOptional, IsArray, IsIn } from "class-validator";
+import { Profile } from "../entities/profile.entity";
 
 export class CreateUserAccountDto {
 
@@ -18,7 +19,11 @@ export class CreateUserAccountDto {
     @IsString()
     userName: string;
 
+    @IsNotEmpty()
+    profile: Profile;
+
     @IsOptional()
-    @IsString()
-    readonly role: string = 'user';
+    @IsArray()
+    @IsIn(['user', 'admin'], { each: true })
+    roleNames?: string[];
 }
