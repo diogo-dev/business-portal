@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Request, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Request, UseInterceptors, UploadedFile, BadRequestException, Query } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -7,6 +7,7 @@ import { Public } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'src/upload/upload.service';
+import { PostStatus } from './enum/post-status.enum';
 
 @Controller('post')
 export class PostController {
@@ -42,6 +43,16 @@ export class PostController {
   @Get()
   findAll() {
     return this.postService.findAll();
+  }
+
+  @Public()
+  @Get('top')
+  findTopPosts(@Query('status') status?: string) {
+    const validStatus = status && Object.values(PostStatus).includes(status as PostStatus) 
+      ? (status as PostStatus) 
+      : PostStatus.PUBLISHED;
+    
+    return this.postService.findTopPosts(validStatus);
   }
 
   @Public()

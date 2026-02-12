@@ -25,6 +25,7 @@ export class PostService {
     return await this.postRepository.save(post);
   }
 
+  // Use QueryBuilder to avoid triggering @UpdateDateColumn on publish and archive
   async publishPost(id: string): Promise<Post> {
     const post = await this.findOne(id);
       
@@ -33,10 +34,17 @@ export class PostService {
       throw new Error('Only draft posts can be published');
     }
 
-    post.status = PostStatus.PUBLISHED;
-    post.publishedAt = new Date();
+    await this.postRepository
+      .createQueryBuilder()
+      .update(Post)
+      .set({ 
+        status: PostStatus.PUBLISHED,
+        publishedAt: new Date()
+      })
+      .where('id = :id', { id })
+      .execute();
 
-    return this.postRepository.save(post);
+    return this.findOne(id);
   }
 
   async archivePost(id: string): Promise<Post> {
@@ -46,13 +54,28 @@ export class PostService {
       throw new Error('Post is already archived');
     }
 
-    post.status = PostStatus.ARCHIVED;
+    await this.postRepository
+      .createQueryBuilder()
+      .update(Post)
+      .set({ status: PostStatus.ARCHIVED })
+      .where('id = :id', { id })
+      .execute();
 
-    return this.postRepository.save(post);
+    return this.findOne(id);
   }
 
   async findAll(): Promise<Post[]> {
     return await this.postRepository.find({ relations: ['author']});
+  }
+
+  async findTopPosts(status: PostStatus): Promise<Post[]> {
+    return await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.author', 'author')
+      .where('post.status = :status', { status })
+      .orderBy('post.createdAt', 'DESC')
+      .limit(6)
+      .getMany();
   }
 
   async findOne(id: string): Promise<Post> {
