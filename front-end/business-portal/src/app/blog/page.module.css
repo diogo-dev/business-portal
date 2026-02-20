@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  padding: 3rem;
+}
+
+.filtersContainer {
+  flex: 1;
+}
+
+.contentContainer {
+  flex: 3;
+}
+

@@ -7,37 +7,31 @@ import { patch, del } from '@/app/api';
 import { toast } from 'sonner';
 import { EditPostModal } from '../EditPostModal/EditPostModal';
 import { DeletePostModal } from '../DeletePostModal/DeletePostModal';
+import Pagination from '@mui/material/Pagination';
+import { Post, MetaData } from '../../_types/post.types';
 
 interface PostGridProps {
-  posts: {
-    id: string;
-    title: string;
-    content: string;
-    summary: string;
-    coverImageUrl: string;
-    status: string;
-    createdAt: string;
-    publishedAt?: string;
-    updatedAt?: string;
-  }[];
-
+  posts: Post[];
+  metaData: MetaData;
   postStatus: 'draft' | 'published' | 'archived';
-
   isLoading?: boolean;
   isSuccess?: boolean;
   setIsLoading?: (loading: boolean) => void | undefined;
   setIsSuccess?: (success: boolean) => void | undefined;
   fetchPosts?: () => void;
+  onPageChange?: (page: number) => void;
 }
 
 export function PostGrid({ 
   posts, 
+  metaData,
   postStatus, 
   isLoading, 
   isSuccess,
   setIsLoading,
   setIsSuccess,
-  fetchPosts
+  fetchPosts,
+  onPageChange
 }: PostGridProps) {
   
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
@@ -213,26 +207,44 @@ export function PostGrid({
         </div>
       )}
       
-      <div className={styles.postsGrid} onClick={handleGridClick}>
-        {posts
-          .filter(post => post.status === postStatus)
-          .map(post => (
-            <PostCard 
-              key={post.id}
-              imageUrl={post.coverImageUrl}
-              title={post.title}
-              summary={post.summary || post.content.substring(0, 150) + '...'}
-              date={new Date(postStatus === 'published' ? post.publishedAt || post.createdAt : post.createdAt).toLocaleDateString('pt-BR')}
-              updatedAt={postStatus === 'published' && post.updatedAt ? new Date(post.updatedAt).toLocaleDateString('pt-BR') : undefined}
-              showUpdatedDate={postStatus === 'published' && post.updatedAt ? new Date(post.updatedAt).getTime() > new Date(post.publishedAt || post.createdAt).getTime() : false}
-              isSelected={selectedPostId === post.id}
-              isDeletable={postStatus === 'draft' && selectedPostId === post.id}
-              onClick={(e) => handlePostClick(post, e)}
-              onDelete={(e) => setShowDeleteModal(true)}
+      <div className={styles.container}>
+        <div className={styles.postsGrid} onClick={handleGridClick}>
+          {posts
+            .filter(post => post.status === postStatus)
+            .map(post => (
+              <PostCard 
+                key={post.id}
+                imageUrl={post.coverImageUrl}
+                title={post.title}
+                slug={post.slug}
+                summary={post.summary || post.content.substring(0, 150) + '...'}
+                date={new Date(postStatus === 'published' ? post.publishedAt || post.createdAt : post.createdAt).toLocaleDateString('pt-BR')}
+                updatedAt={postStatus === 'published' && post.updatedAt ? new Date(post.updatedAt).toLocaleDateString('pt-BR') : undefined}
+                showUpdatedDate={postStatus === 'published' && post.updatedAt ? new Date(post.updatedAt).getTime() > new Date(post.publishedAt || post.createdAt).getTime() : false}
+                isSelected={selectedPostId === post.id}
+                isDeletable={postStatus === 'draft' && selectedPostId === post.id}
+                onClick={(e) => handlePostClick(post, e)}
+                onDelete={(e) => setShowDeleteModal(true)}
+              />
+            ))
+          }
+        </div>
+
+        <div className={styles.paginationContainer}>
+          {metaData && (
+            <Pagination
+              count={metaData.totalPages}
+              page={metaData.currentPage}
+              onChange={(event, page) => onPageChange?.(page)}
+              shape='rounded'
+              color='primary'
+              size='medium'
             />
-          ))
-        }
+          )}
+        </div>
       </div>
+
+      
 
       {showEditModal && selectedPostId && (
         <EditPostModal 

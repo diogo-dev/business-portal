@@ -1,5 +1,5 @@
 import { UserAccount } from "src/user-account/entities/user-account.entity";
-import { Entity, Column,  PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinTable, ManyToMany } from "typeorm";
+import { Entity, Column,  PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinTable, ManyToMany, Index } from "typeorm";
 import { PostStatus } from "../enum/post-status.enum";
 import { PostComment } from "src/post-comment/entities/post-comment.entity";
 import { Category } from "src/category/entities/category.entity";
@@ -13,6 +13,10 @@ export class Post {
     @Column()
     title: string;
 
+    @Index({ unique: true })
+    @Column({unique: true})
+    slug: string;
+
     @Column()
     content: string;
 
@@ -25,9 +29,11 @@ export class Post {
     @Column({ name: 'cover_image_url', nullable: true })
     coverImageUrl: string;
 
+    @Index()
     @Column({ type: 'timestamptz', name: 'published_at', nullable: true })
     publishedAt: Date;
 
+    @Index()
     @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
     createdAt: Date;
     

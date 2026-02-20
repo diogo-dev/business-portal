@@ -1,7 +1,11 @@
+"use client";
+
 import styles from './PostCard.module.css';
+import { useRouter } from 'next/navigation';
 
 interface PostCardProps {
   imageUrl: string;
+  slug: string;
   title: string;
   summary: string;
   date?: string;
@@ -15,6 +19,12 @@ interface PostCardProps {
 }
 
 export function PostCard(props: PostCardProps) {
+
+  const router = useRouter();
+
+  const handleReadMore = (e: React.MouseEvent) => {
+    router.push(`/posts/${props.slug}`);
+  }
 
   return (
     <div 
@@ -71,7 +81,10 @@ export function PostCard(props: PostCardProps) {
           {props.summary}
         </p>
         
-        <button className={styles.readMore}>
+        <button 
+          className={styles.readMore}
+          onClick={handleReadMore}
+        >
           Read More
         </button>
       </div>

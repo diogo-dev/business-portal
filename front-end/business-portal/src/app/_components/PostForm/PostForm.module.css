@@ -179,6 +179,19 @@
   transform: translateY(0);
 }
 
+.submitButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.submitButton:disabled:hover {
+  background-color: #9ca3af;
+  transform: none;
+  box-shadow: none;
+}
+
 /* Preview */
 .previewContainer {
   padding: 2rem;

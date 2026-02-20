@@ -5,6 +5,7 @@ interface InputCardProps {
 	inputType: string;
 	placeholder?: string;
 	value?: string;
+	required?: boolean;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -23,6 +24,7 @@ export function InputCard( props: InputCardProps ) {
 					placeholder={props.placeholder}
 					value={props.value}
 					onChange={props.onChange}
+					required={props.required}
 				/>
 			</div>
 		</div>

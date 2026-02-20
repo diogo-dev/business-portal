@@ -8,6 +8,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'src/upload/upload.service';
 import { PostStatus } from './enum/post-status.enum';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('post')
 export class PostController {
@@ -41,18 +42,27 @@ export class PostController {
 
   @Public()
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  getPublishedPosts(@Query() query: PaginationDto) {
+    const page = query.page || 1;
+    const limit = query.limit || 9;
+    return this.postService.findPaginatedPosts(page, limit);
   }
 
-  @Public()
-  @Get('top')
-  findTopPosts(@Query('status') status?: string) {
+  @Get('status')
+  @Roles('admin')
+  getPostsByStatus(@Query() query: PaginationDto, @Query('status') status?: string) {
     const validStatus = status && Object.values(PostStatus).includes(status as PostStatus) 
       ? (status as PostStatus) 
       : PostStatus.PUBLISHED;
-    
-    return this.postService.findTopPosts(validStatus);
+    const page = query.page || 1;
+    const limit = query.limit || 9;
+    return this.postService.findPaginatedPostsByStatus(page, limit, validStatus);
+  }
+
+  @Public()
+  @Get('slug/:slug')
+  findBySlug(@Param('slug') slug: string) {
+    return this.postService.findOneBySlug(slug);
   }
 
   @Public()

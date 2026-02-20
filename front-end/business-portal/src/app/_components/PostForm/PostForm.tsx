@@ -7,16 +7,12 @@ import styles from './PostForm.module.css';
 import { TextareaCard } from '../TextareaCard/TextareaCard';
 import { postFormData } from '@/app/api';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
-interface PostFormProps {
-  isLoading: boolean;
-  isSuccess: boolean;
-  setIsLoading: (loading: boolean) => void;
-  setIsSuccess: (success: boolean) => void;
-  onSuccess?: () => void;
-}
-
-export function PostForm({ isLoading, isSuccess, setIsLoading, setIsSuccess, onSuccess }: PostFormProps) {
+export function PostForm() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
@@ -54,23 +50,22 @@ export function PostForm({ isLoading, isSuccess, setIsLoading, setIsSuccess, onS
         return;
       }
       
-      // Sucesso!
+      // Success!
       setIsLoading(false);
       setIsSuccess(true);
       toast.success('Post created successfully!');
       
-      // Limpar formulário
+      // Clear form fields
       setTitle('');
       setSummary('');
       setContent('');
       setImageFile(null);
       
-      // Após 2 segundos, resetar e mudar de tab
+      // After 2 seconds, navigate to drafts and refresh server data
       setTimeout(() => {
         setIsSuccess(false);
-        if (onSuccess) {
-          onSuccess();
-        }
+        router.push('/manage-post?tab=draft');
+        router.refresh();
       }, 2000);
       
     } catch (error: any) {
@@ -157,6 +152,7 @@ export function PostForm({ isLoading, isSuccess, setIsLoading, setIsSuccess, onS
               type="submit"
               className={styles.submitButton}
               onClick={handleSubmit}
+              disabled={!title || !content || isLoading}
             >
               Create Post
             </button>

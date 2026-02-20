@@ -4,17 +4,17 @@ export class CreatePostDto {
 
     @IsOptional()
     @IsUrl()
-    coverImageUrl: string;
+    coverImageUrl?: string;
 
     @IsString()
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Empty Title ' })
     title: string;
 
     @IsString()
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Empty Content' })
     content: string;
 
     @IsOptional()
     @IsString()
-    summary: string;
+    summary?: string;
 }

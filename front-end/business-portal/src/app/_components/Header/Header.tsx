@@ -6,12 +6,25 @@ import Link from 'next/link';
 import styles from './Header.module.css';
 import { useAuth } from '../../_context/AuthContext';
 import { FiLogOut } from "react-icons/fi";
+import { NavDropDown } from '../NavDropDown/NavDropDown';
 
 export function Header() {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user, isAuthenticated, logout } = useAuth();
+  const isAdmin = user?.roles?.some((role : any) => role.name === 'admin');
+
+  const dropdownItems = {
+    event: [
+      { label: 'Events', href: '/events' },
+      { label: 'Manage Events', href: '/manage-events' }
+    ],
+    blog: [
+      { label: 'Blog', href: '/blog' },
+      { label: 'Manage Blog', href: '/manage-post' }
+    ]
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,11 +64,30 @@ export function Header() {
             {isAuthenticated ? (
                 <>
                   <div className={styles.middleSection}>
-                    <a href="#home" className={styles.link}>Home</a>
-                    <a href="#events" className={styles.link}>Events</a>
-                    <a href="#blog" className={styles.link}>Blog</a>
-                    <a href="#about" className={styles.link}>About</a>
-                    <a href="#contact" className={styles.link}>Contact</a>
+                    <Link href="/" className={styles.link}>Home</Link>
+                  
+                    {isAdmin ? (
+                      <NavDropDown 
+                        label="Event"
+                        href='/events'
+                        dropdownList={dropdownItems.event}
+                      />
+                    ) : (
+                      <Link href="/events" className={styles.link}>Events</Link>
+                    )}
+
+                    {isAdmin ? (
+                      <NavDropDown 
+                        label="Blog"
+                        href='/blog'
+                        dropdownList={dropdownItems.blog}
+                      />
+                    ) : (
+                      <Link href="/blog" className={styles.link}>Blog</Link>
+                    )}                    
+                    
+                    <Link href="/#about" className={styles.link}>About</Link>
+                    <Link href="/#contact" className={styles.link}>Contact</Link>
                   </div>
                 
                   <div className={styles.rightSection}>
@@ -65,7 +97,7 @@ export function Header() {
                       onClick={logout}
                       > 
                         <FiLogOut /> 
-                        Log out
+                        <span className={styles.logoutText}>Log out</span>
                     </button>
                   </div>  
           
@@ -73,11 +105,11 @@ export function Header() {
             ) : (
               <>
                 <div className={styles.middleSection}>
-                  <a href="#home" className={styles.link}>Home</a>
-                  <a href="#events" className={styles.link}>Events</a>
-                  <a href="#blog" className={styles.link}>Blog</a>
-                  <a href="#about" className={styles.link}>About</a>
-                  <a href="#contact" className={styles.link}>Contact</a>
+                  <Link href="/" className={styles.link}>Home</Link>
+                  <Link href="/events" className={styles.link}>Events</Link>
+                  <Link href="/blog" className={styles.link}>Blog</Link>
+                  <Link href="/#about" className={styles.link}>About</Link>
+                  <Link href="/#contact" className={styles.link}>Contact</Link>
                 </div>
               
                 <div className={styles.rightSection}>

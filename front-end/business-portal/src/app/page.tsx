@@ -6,6 +6,21 @@ import { PostForm } from '@/app/_components/PostForm/PostForm';
 export default function Home() {
   return (
     <>
+      <section id="home">
+        
+      </section>
+
+      <section>
+
+      </section>
+
+      <section>
+
+      </section>
+
+      <section>
+
+      </section>
     </>
   );
 }
