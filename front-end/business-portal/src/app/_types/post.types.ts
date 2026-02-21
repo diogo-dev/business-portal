@@ -1,3 +1,6 @@
+import { Profile } from './profile.types';
+import { User } from './user.types';
+
 export interface Post {
   id: string;
   title: string;
@@ -9,6 +12,8 @@ export interface Post {
   createdAt: string;
   publishedAt?: string;
   updatedAt?: string;
+  author?: User;
+  comments: Comment[];
 }
 
 export interface MetaData {

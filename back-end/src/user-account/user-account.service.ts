@@ -58,6 +58,8 @@ export class UserAccountService {
       ...createUserAccountDto,
       profile: {
         // default profile values
+        firstName: '',
+        lastName: '',
         age: 18,
         dob: new Date(),
         bio: '',

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { PublicPostGridWrapper } from '../_components/PublicPostGridWrapper/PublicPostGridWrapper';
 import SearchBar  from '../_components/SearchBar/SearchBar';
 import styles from './page.module.css';
@@ -23,12 +24,22 @@ export default async function Blog({ searchParams }: { searchParams: Promise<Pub
           <SearchBar />
         </div>
         <div>
-          <PublicPostGridWrapper 
-            page={page}
-            limit={limit}
-          />
+          <Suspense fallback={<LoadingState />}>
+            <PublicPostGridWrapper 
+              page={page}
+              limit={limit}
+            />
+          </Suspense>
         </div>
       </div>
     </div>
    );
+}
+
+function LoadingState() {
+  return (
+    <div className={styles.noDataMessageStyle}>
+      <p>Loading posts...</p>
+    </div>
+  );
 }

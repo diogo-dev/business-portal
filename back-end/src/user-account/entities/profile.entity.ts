@@ -6,6 +6,12 @@ export class Profile {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({name: 'first_name'})
+  firstName: string;
+
+  @Column({name: 'last_name'})
+  lastName: string;
+
   @Column({type: 'int'})
   age: number;
 
@@ -17,7 +23,6 @@ export class Profile {
 
   @Column({name: 'avatar_url'})
   avatarUrl: string;
-
   
   @Column({unique: true })
   phone: string;

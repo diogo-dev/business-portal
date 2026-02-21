@@ -84,3 +84,25 @@
   from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
+
+@media (max-width: 1024px) {
+  .link {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .link {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+}
+
+@media (max-width: 650px) {
+  .link {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+}

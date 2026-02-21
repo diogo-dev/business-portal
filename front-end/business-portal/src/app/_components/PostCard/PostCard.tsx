@@ -23,7 +23,7 @@ export function PostCard(props: PostCardProps) {
   const router = useRouter();
 
   const handleReadMore = (e: React.MouseEvent) => {
-    router.push(`/posts/${props.slug}`);
+    router.push(`/blog/${props.slug}`);
   }
 
   return (

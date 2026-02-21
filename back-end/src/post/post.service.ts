@@ -88,10 +88,17 @@ export class PostService {
       throw error;
     }
   }
-
+  
   async findOneBySlug(slug: string): Promise<Post> {
     try {
-      const post = await this.postRepository.findOneOrFail({where: {slug}, relations: ['comments']})
+      const post = await this.postRepository.createQueryBuilder('post')
+        .leftJoinAndSelect('post.comments', 'comments')
+        .leftJoinAndSelect('post.author', 'author')
+        .leftJoin('author.profile', 'profile')
+        .addSelect(['profile.firstName', 'profile.lastName', 'profile.avatarUrl', 'profile.socialLinks', 'profile.occupation'])
+        .where('post.slug = :slug', { slug })
+        .getOneOrFail();
+
       return post;
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
