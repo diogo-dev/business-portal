@@ -5,6 +5,9 @@ This project is still in its development phase.
 ## Demo video of the manage post section
 link: https://youtu.be/qcie0JdHPl0
 
+## Demo video of the blog section with pagination
+link: https://www.youtube.com/watch?v=SzKjzemo2rk
+
 ## Current dbeaver ERD diagram
 
 - User Authentication and Authorization implemented using Role-Based Access Control (RBAC) with AuthGuard, Custom Decorators and JwtService (@nestjs/jwt)
@@ -13,7 +16,7 @@ link: https://youtu.be/qcie0JdHPl0
 
 <table align="center">
   <td align="center">
-    <img src="/ERD2.png" alt="ERD diagram" width="800" />
+    <img src="/ERD3.png" alt="ERD diagram" width="800" />
   </td>
 </table>
 
