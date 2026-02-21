@@ -21,7 +21,7 @@ export default async function Blog({ searchParams }: { searchParams: Promise<Pub
 
       <div className={styles.contentContainer}>
         <div>
-          <SearchBar />
+          {/* <SearchBar /> */}
         </div>
         <div>
           <Suspense fallback={<LoadingState />}>

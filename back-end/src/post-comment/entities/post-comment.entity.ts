@@ -14,10 +14,9 @@ export class PostComment {
     @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
     createdAt: Date;
 
-    @OneToOne(() => UserAccount)
-    @JoinColumn()
+    @ManyToOne(() => UserAccount, user => user.posts, { eager: true })
     author: UserAccount;
 
-    @ManyToOne(() => Post, post => post.comments, {onDelete: 'CASCADE'})
+    @ManyToOne(() => Post, post => post.comments, { onDelete: 'CASCADE' })
     post: Post;
 }

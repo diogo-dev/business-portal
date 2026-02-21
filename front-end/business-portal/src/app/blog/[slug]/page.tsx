@@ -1,10 +1,12 @@
 import { notFound } from 'next/navigation';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { get } from '@/app/api';
 import type { Post } from '@/app/_types/post.types';
 import styles from './page.module.css';
+import { CommentSection } from '@/app/_components/CommentSection/CommentSection';
+import { ScrollToComments } from '@/app/_components/ScrollToComments/ScrollToComments';
+import { DisplayCommentsWrapper } from '@/app/_components/DisplayCommentsWrapper/DisplayCommentsWrapper';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -16,6 +18,7 @@ async function getPost(slug: string): Promise<Post | null> {
     if (!response.ok) return null;
     return await response.json();
   } catch (error) {
+    console.log('Error fetching post:', error);
     return null;
   }
 }
@@ -69,9 +72,7 @@ export default async function PostPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div>
-            <ExpandMoreIcon className={styles.goToComments} />
-          </div>
+          <ScrollToComments targetId="comments-section" />
         </div>
 
         {/* Cover Image */}
@@ -91,13 +92,12 @@ export default async function PostPage({ params }: PageProps) {
         </div>
 
         {/* Comment section */}
-        <div className={styles.commentContainer}>
-          <h2 className={styles.commentTitle}>{post.comments.length} Comments</h2>
-          {/* 2 components here:
-            1: one for inputting new comment
-            2: one for displaying list of comments
-          */}
+        <div id="comments-section" className={styles.commentSection}>
+          <CommentSection initialCount={post.comments.length || 0} postId={post.id} >
+            <DisplayCommentsWrapper postId={post.id} />
+          </CommentSection>
         </div>
+        
       </article>
     </Container>
   );

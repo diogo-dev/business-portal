@@ -47,6 +47,12 @@ export class PostCommentService {
     });
   }
 
+  async findAllCommentsByPostId(post_id: string): Promise<PostComment[]> {
+    return await this.postCommentRepository.find({
+      where: { post: { id: post_id } }
+    });
+  }
+
   async findOne(id: string): Promise<PostComment> {
     try {
       return await this.postCommentRepository.findOneOrFail({ where: { id }, relations: ['author', 'post'] });

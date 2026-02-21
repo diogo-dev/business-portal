@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "./_components/Header/Header";
 import { AuthProvider } from "./_context/AuthContext";
+import MuiProvider from "./_context/MuiProvider";
 import { Toaster } from "sonner";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppRouterCacheProvider>
           <AuthProvider>
-            <Header />
-            <Toaster position="bottom-right" richColors />
-            {children}
+            <MuiProvider>
+              <Header />
+              <Toaster position="bottom-right" richColors />
+              {children}
+            </MuiProvider>
           </AuthProvider>
         </AppRouterCacheProvider>
       </body>

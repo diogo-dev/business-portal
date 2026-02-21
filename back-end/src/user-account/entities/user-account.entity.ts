@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { Exclude } from "class-transformer";
 import { Role } from "src/role/role.entity";
 import { Profile } from "./profile.entity";
+import { PostComment } from "src/post-comment/entities/post-comment.entity";
 
 @Entity()
 export class UserAccount {
@@ -24,6 +25,9 @@ export class UserAccount {
 
     @OneToMany(() => Post, post => post.author)
     posts: Post[]
+
+    @OneToMany(() => PostComment, (comment) => comment.author)
+    comments: PostComment[];
 
     @OneToMany(() => Event, event => event.creator)
     events: Event[]

@@ -22,6 +22,12 @@ export class PostCommentController {
     return this.postCommentService.findAll();
   }
 
+  @Public()
+  @Get('/:postId')
+  findAllCommentsByPostId(@Param('postId', ParseUUIDPipe) postId: UUID) {
+    return this.postCommentService.findAllCommentsByPostId(postId);
+  }
+
   @Get(':id')
   @Roles('admin')
   findOne(@Param('id', ParseUUIDPipe) id: UUID) {

@@ -176,12 +176,6 @@
   margin-bottom: 8px;
 }
 
-.commentContainer {
-  margin-top: 48px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(230, 230, 230, 1);
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .container {
