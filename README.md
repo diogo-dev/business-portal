@@ -8,6 +8,9 @@ link: https://youtu.be/qcie0JdHPl0
 ## Demo video of the blog section with pagination
 link: https://www.youtube.com/watch?v=SzKjzemo2rk
 
+## Demo video of the comments section on a blog post
+link: https://www.youtube.com/watch?v=rPJi7LwfAms
+
 ## Current dbeaver ERD diagram
 
 - User Authentication and Authorization implemented using Role-Based Access Control (RBAC) with AuthGuard, Custom Decorators and JwtService (@nestjs/jwt)
