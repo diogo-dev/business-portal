@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './AuthForm.module.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 interface FormField {
   placeholder: string;
@@ -31,6 +32,7 @@ export function AuthForm({
   disabled
 }: FormProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [showPassword, setShowPassword] = useState<Record<string, boolean>>({});
 
   function formatPhone(value: string): string {
     // Remove all non-digit characters
@@ -60,6 +62,10 @@ export function AuthForm({
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
+  function togglePasswordVisibility(fieldName: string) {
+    setShowPassword((prev) => ({ ...prev, [fieldName]: !prev[fieldName] }));
+  }
+
   function handleFormSubmit(e: React.FormEvent) {
     console.log('AuthForm handleFormSubmit called');
     console.log('Form data:', formData);
@@ -83,18 +89,34 @@ export function AuthForm({
         onSubmit={handleFormSubmit} 
         className={styles.form}
       >
-        {fields.map((field, index) => (
-          <input
-            key={index}
-            type={field.type || 'text'}
-            placeholder={field.placeholder}
-            name={field.name}
-            value={formData[field.name] || ''}
-            onChange={(e) => handleChange(field.name, e.target.value)}
-            className={styles.input}
-            required
-          />
-        ))}
+        {fields.map((field, index) => {
+          const isPasswordField = field.type === 'password';
+          const inputType = isPasswordField && showPassword[field.name] ? 'text' : field.type || 'text';
+          
+          return (
+            <div key={index} className={isPasswordField ? styles.inputWrapper : undefined}>
+              <input
+                type={inputType}
+                placeholder={field.placeholder}
+                name={field.name}
+                value={formData[field.name] || ''}
+                onChange={(e) => handleChange(field.name, e.target.value)}
+                className={styles.input}
+                required
+              />
+              {isPasswordField && (
+                <button
+                  type="button"
+                  className={styles.eyeButton}
+                  onClick={() => togglePasswordVisibility(field.name)}
+                  aria-label={showPassword[field.name] ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword[field.name] ? <FaEye /> : <FaEyeSlash />}
+                </button>
+              )}
+            </div>
+          );
+        })}
 
         <button type="submit" className={styles.button} disabled={disabled}>
           {buttonText}
