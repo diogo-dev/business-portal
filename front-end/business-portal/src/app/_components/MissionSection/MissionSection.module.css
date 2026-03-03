@@ -1,0 +1,207 @@
+.section {
+  width: 100vw;
+  padding: 80px 40px;
+  background-color: var(--light-dark);
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.sectionSubtitle {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1f36;
+  margin-bottom: 64px;
+}
+
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timelineLine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--tech-green);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+/* Each row: icon on one side, card on the other */
+.row {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 56px;
+  z-index: 1;
+}
+
+.row:last-child {
+  margin-bottom: 0;
+}
+
+/* Row where icon is on the right, card on the left */
+.rowLeft .iconSide {
+  order: 2;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 40px;
+  flex: 1;
+}
+
+.rowLeft .cardSide {
+  order: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 40px;
+  flex: 1;
+}
+
+/* Row where icon is on the left, card on the right */
+.rowRight .iconSide {
+  order: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 40px;
+  flex: 1;
+}
+
+.rowRight .cardSide {
+  order: 2;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 40px;
+  flex: 1;
+}
+
+/* Dot in the center */
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--dark-tech-green);
+  flex-shrink: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0, 171, 108, 0.6), 0 0 20px rgba(0, 171, 108, 0.4), 0 0 0 4px rgba(0, 171, 108, 0.2);
+}
+
+/* Icon box */
+.iconBox {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  background: var(--tech-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 20px rgba(0, 171, 108, 0.4), 0 0 40px rgba(0, 171, 108, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+
+}
+
+.iconBox:hover {
+  box-shadow: 0 0 30px rgba(0, 171, 108, 0.6), 0 0 60px rgba(0, 171, 108, 0.3), 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.iconBox svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* Card */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px 32px;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 171, 108, 0.5), 0 0 40px rgba(0, 171, 108, 0.3), 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1f36;
+  margin: 0 0 12px 0;
+}
+
+.cardText {
+  font-size: 15px;
+  text-align: justify;
+  line-height: 1.5;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Right-aligned card text for Visão (left card) */
+.rowLeft .card {
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .timeline {
+    padding: 0 0 0 32px;
+  }
+
+  .timelineLine {
+    left: 7px;
+    transform: none;
+  }
+
+  .row,
+  .rowLeft,
+  .rowRight {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 24px;
+    margin-bottom: 40px;
+  }
+
+  .rowLeft .iconSide,
+  .rowRight .iconSide,
+  .rowLeft .cardSide,
+  .rowRight .cardSide {
+    order: unset;
+    padding: 0;
+    justify-content: flex-start;
+    flex: unset;
+    width: 100%;
+  }
+
+  .dot {
+    position: absolute;
+    left: -28px;
+    top: 16px;
+  }
+
+  .iconBox {
+    margin-bottom: 16px;
+  }
+
+  .card {
+    max-width: 100%;
+    text-align: left !important;
+  }
+}
