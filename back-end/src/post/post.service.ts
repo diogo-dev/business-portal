@@ -2,18 +2,36 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Entity, EntityNotFoundError, Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { PostStatus } from './enum/post-status.enum';
 import { UserAccountService } from 'src/user-account/user-account.service';
+import { CategoryService } from 'src/category/category.service';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) 
     private readonly postRepository: Repository<Post>,
-    private readonly userAccountService: UserAccountService
+    private readonly userAccountService: UserAccountService,
+    private readonly categoryService: CategoryService
   ) {}
+
+  async verifyPostCategories(categoriesNames: string[]) {
+    const categories: Category[] = [];
+
+    for (const name of categoriesNames) {
+      const category = await this.categoryService.findBySlug(name);
+
+      if (!category) {
+        throw new NotFoundException(`Category with name ${name} not found`);
+      }
+      categories.push(category);
+    }
+
+    return categories;
+  }
 
   async createPost(createPostDto: CreatePostDto, authorId: string) {
     // search for author by id
@@ -22,14 +40,16 @@ export class PostService {
     // gererate slug from title
     const slug = this.generateSlug(createPostDto.title);
 
-     // check if slug already exists
-     const existingPost = await this.postRepository.findOne({where: {slug}});
-     if (existingPost) {
-       throw new Error('Slug already exists');
-     }
+    // check if slug already exists
+    const existingPost = await this.postRepository.findOne({where: {slug}});
+    if (existingPost) {
+      throw new Error('Slug already exists');
+    }
+
+    const categories = await this.verifyPostCategories(createPostDto.categoriesNames);
 
     // create post with the author object
-    const post  = await this.postRepository.create({...createPostDto, author: author, slug: slug});
+    const post = await this.postRepository.create({...createPostDto, author: author, slug: slug, categories: categories});
 
     return await this.postRepository.save(post);
   }
@@ -164,7 +184,13 @@ export class PostService {
       throw new Error('Archived posts cannot be updated');
     }
 
-    return await this.postRepository.save({...post, ...updatePostDto});
+    // If I update the title, also update the slug
+    let slug = post.slug;
+    if (updatePostDto.title && updatePostDto.title !== post.title) {
+      slug = this.generateSlug(updatePostDto.title);
+    }
+
+    return await this.postRepository.save({...post, ...updatePostDto, slug});
   }
 
   async remove(id: string): Promise<Post> {

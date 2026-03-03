@@ -1,6 +1,6 @@
 import { Post } from "src/post/entities/post.entity";
 import { UserAccount } from "src/user-account/entities/user-account.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class PostComment {
@@ -11,6 +11,7 @@ export class PostComment {
     @Column()
     content: string;
 
+    @Index()
     @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
     createdAt: Date;
 

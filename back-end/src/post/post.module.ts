@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { UserAccountModule } from 'src/user-account/user-account.module';
 import { UploadModule } from 'src/upload/upload.module';
+import { CategoryModule } from 'src/category/category.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post]), UserAccountModule, UploadModule],
+  imports: [TypeOrmModule.forFeature([Post]), UserAccountModule, UploadModule, CategoryModule],
   controllers: [PostController],
   providers: [PostService],
   exports: [PostService]

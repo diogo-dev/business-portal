@@ -19,7 +19,7 @@ export class CreateUserAccountDto {
     @IsString()
     userName: string;
 
-    @IsNotEmpty()
+    // @IsNotEmpty()
     profile: Profile;
 
     @IsOptional()

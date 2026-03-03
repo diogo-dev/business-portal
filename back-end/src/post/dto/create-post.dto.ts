@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsOptional, IsUrl } from "class-validator";
+import { IsString, IsNotEmpty, IsOptional, IsUrl, IsArray } from "class-validator";
+import { Transform } from "class-transformer";
 
 export class CreatePostDto {
 
@@ -17,4 +18,10 @@ export class CreatePostDto {
     @IsOptional()
     @IsString()
     summary?: string;
+
+    @IsOptional()
+    @Transform(({ value }) => Array.isArray(value) ? value : [value])
+    @IsString({ each: true })
+    @IsArray()
+    categoriesNames: string[];
 }

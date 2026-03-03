@@ -47,10 +47,21 @@ export class PostCommentService {
     });
   }
 
+  // async findAllCommentsByPostId(post_id: string): Promise<PostComment[]> {
+  //   return await this.postCommentRepository.find({
+  //     where: { post: { id: post_id } },
+  //     relations: ['author']
+  //   });
+  // }
+
   async findAllCommentsByPostId(post_id: string): Promise<PostComment[]> {
-    return await this.postCommentRepository.find({
-      where: { post: { id: post_id } }
-    });
+    return await this.postCommentRepository
+    .createQueryBuilder('comment')
+    .leftJoinAndSelect('comment.author', 'author')
+    .where('comment.post.id = :postId', { postId: post_id })
+    .orderBy('comment.createdAt', 'DESC')
+    .limit(10)
+    .getMany();
   }
 
   async findOne(id: string): Promise<PostComment> {

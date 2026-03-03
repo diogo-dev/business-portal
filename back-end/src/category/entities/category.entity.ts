@@ -7,10 +7,10 @@ export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   slug: string;
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
