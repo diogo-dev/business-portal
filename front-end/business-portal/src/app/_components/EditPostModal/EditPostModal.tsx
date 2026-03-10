@@ -87,8 +87,7 @@ export function EditPostModal({ post, onClose, onSuccess }: EditPostModalProps) 
       const token = localStorage.getItem('token');
       if (!token) {
         toast.error('You must be logged in to edit a post');
-        setIsLoading(false);
-        return;
+        throw new Error('Authentication token not found');
       }
 
       const formData = new FormData();
@@ -103,9 +102,7 @@ export function EditPostModal({ post, onClose, onSuccess }: EditPostModalProps) 
       const response = await patchFormData(`/post/${post.id}`, formData, token);
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        toast.error(errorData.message || `Error updating post`);
-        setIsLoading(false);
-        return;
+        throw new Error(errorData.message);
       }
 
       setIsLoading(false);
@@ -113,7 +110,6 @@ export function EditPostModal({ post, onClose, onSuccess }: EditPostModalProps) 
       toast.success('Post updated successfully!');
 
     } catch (error: any) {
-      console.error('Error updating post:', error);
       toast.error(error.message || 'An unexpected error occurred while updating the post');
       setIsLoading(false);
     }

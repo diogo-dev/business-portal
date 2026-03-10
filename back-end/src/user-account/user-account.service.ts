@@ -29,11 +29,11 @@ export class UserAccountService {
     const existingPhoneNumber = await this.userAccountRepository
       .createQueryBuilder('user')
       .innerJoinAndSelect('user.profile', 'profile')
-      .where('profile.phone = :phone', { phone: createUserAccountDto.phone })
+      .where('profile.phone = :phone', { phone: createUserAccountDto.profile.phone })
       .getOne();
 
     if (existingPhoneNumber) {
-      throw new ConflictException(`Phone number ${createUserAccountDto.phone} already in use`);
+      throw new ConflictException(`Phone number ${createUserAccountDto.profile.phone} already in use`);
     }
 
     const roleNames = createUserAccountDto.roleNames ?? ['user'];
@@ -55,23 +55,20 @@ export class UserAccountService {
     const roles = await this.verifyCreateUserAccountDto(createUserAccountDto);    
 
     const newUserAccount = this.userAccountRepository.create({
-      ...createUserAccountDto,
+      email: createUserAccountDto.email,
+      passwordHash: createUserAccountDto.passwordHash,
+      userName: createUserAccountDto.userName,
       profile: {
-        // default profile values
-        firstName: '',
+        firstName: createUserAccountDto.userName || '',
         lastName: '',
-        age: 18,
-        dob: new Date(),
         bio: '',
         avatarUrl: '',
-        phone: createUserAccountDto.phone,
+        phone: createUserAccountDto.profile.phone,
         postalCode: '',
         city: '',
         state: '',
         country: '',
-        socialLinks: [],
-        occupation: '',
-        gender: 'other',
+        occupation: ''
       },
       roles: roles
     });
@@ -107,7 +104,21 @@ export class UserAccountService {
 
   async update(id: string, updateUserAccountDto: UpdateUserAccountDto): Promise<UserAccount> {
     const account = await this.findOne(id);
-    return await this.userAccountRepository.save({ ...account, ...updateUserAccountDto })
+
+    // Update basic fields
+    if (updateUserAccountDto.email) account.email = updateUserAccountDto.email;
+    if (updateUserAccountDto.passwordHash) account.passwordHash = updateUserAccountDto.passwordHash;
+    if (updateUserAccountDto.userName) account.userName = updateUserAccountDto.userName;
+
+    // Merge profile fields instead of replacing the entire object
+    if (updateUserAccountDto.profile) {
+      if (!account.profile) {
+        account.profile = {} as any;
+      }
+      Object.assign(account.profile, updateUserAccountDto.profile);
+    }
+
+    return await this.userAccountRepository.save(account);
   }
 
   async remove(id: string): Promise<UserAccount> {

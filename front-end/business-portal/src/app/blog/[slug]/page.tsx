@@ -59,7 +59,7 @@ export default async function PostPage({ params }: PageProps) {
         <div className={styles.authorSection}>
           <div className={styles.authorInfo}>
             <Avatar 
-              sx={{bgcolor: '#000000'}}
+              sx={{bgcolor: 'var(--soft-white)', color: 'primary.dark'}}
               src={authorAvatar} 
               alt={authorName}
               className={styles.avatar}

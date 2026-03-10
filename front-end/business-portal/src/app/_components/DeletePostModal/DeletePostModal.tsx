@@ -45,18 +45,13 @@ export function DeletePostModal({ postId, onClose, onSuccess }: DeletePostModalP
      try {
       const token = localStorage.getItem('token');
       if (!token) {
-        toast.error('You must be logged in to delete a post');
-        setIsLoading(false);
-        return;
+        throw new Error('User is not authenticated');
       }
 
       const response = await del(`/post/${postId}`, token);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        toast.error(errorData.message || 'Error deleting post');
-        setIsLoading(false);
-        return;
+        throw new Error('Failed to delete post');
       }
 
       // Success
@@ -66,7 +61,6 @@ export function DeletePostModal({ postId, onClose, onSuccess }: DeletePostModalP
       
 
     } catch (error: any) {
-      console.error('Error deleting post:', error);
       toast.error(error.message || 'An unexpected error occurred');
       setIsLoading(false);
       setIsSuccess(false);

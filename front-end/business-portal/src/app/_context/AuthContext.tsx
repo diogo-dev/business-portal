@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { get, post } from "../api"
 import { useRouter } from "next/navigation";
 import { User } from "../_types/user.types";
+import { profile } from "console";
 
 interface AuthContextType {
   user: User | null;
@@ -76,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     async function register(userName: string, email: string, phone: string, passwordHash: string) {
-        const res = await post("auth/register", { userName, email, phone, passwordHash });
+        const res = await post("auth/register", { email, passwordHash, userName,  profile: { phone } });
 
         if (!res.ok) {
             const error = await res.json();

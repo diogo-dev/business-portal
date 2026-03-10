@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserAccountDto } from 'src/user-account/dto/create-user-account.dto';
 import { SignInDto } from 'src/user-account/dto/sign-in.dto';
 import { EntityNotFoundError } from 'typeorm';
+import { UpdateUserAccountDto } from 'src/user-account/dto/update-user-account.dto';
 
 @Injectable()
 export class AuthService {
@@ -59,5 +60,9 @@ export class AuthService {
 
     async getProfile(userId: string) {
         return this.userAccountService.findOne(userId);
+    }
+
+    async updateProfile(userId: string, updateProfileDto: UpdateUserAccountDto) {
+        return this.userAccountService.update(userId, updateProfileDto);
     }
 }

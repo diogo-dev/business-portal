@@ -12,10 +12,10 @@ export class Profile {
   @Column({name: 'last_name'})
   lastName: string;
 
-  @Column({type: 'int'})
+  @Column({type: 'int', nullable: true})
   age: number;
 
-  @Column({name: 'date_of_birth', type: 'date'})
+  @Column({name: 'date_of_birth', type: 'date', nullable: true})
   dob: Date;
 
   @Column()
@@ -39,10 +39,14 @@ export class Profile {
   @Column()
   country: string;
 
-  @Column({name: 'social_links', type: 'simple-array'})
-  socialLinks: string[];
+  @Column({name: 'social_links', type: 'json', nullable: true})
+  socialLinks: {
+    facebook?: string;
+    instagram?: string;
+    twitter?: string;
+  };
 
-  @Column({ type: 'enum', enum: ['male', 'female', 'other'] })
+  @Column({ type: 'enum', enum: ['male', 'female', 'other'], nullable: true })
   gender: string;
 
   @Column()

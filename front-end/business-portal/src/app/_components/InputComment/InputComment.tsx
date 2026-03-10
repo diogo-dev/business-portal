@@ -28,9 +28,9 @@ export function InputComment(props: InputCommentProps) {
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const handleSubmit = async () => {
-    setIsLoading(true);
-
+    
     try {
+      setIsLoading(true);
       const token = localStorage.getItem('token');
       if (!token) {
         toast.error('You must be logged in to create a post');
@@ -43,10 +43,7 @@ export function InputComment(props: InputCommentProps) {
       ])
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        toast.error(errorData.message || 'Failed to create comment');
-        setIsLoading(false);
-        return;
+        throw new Error('Failed to create comment');
       }
 
       // Success!
@@ -81,7 +78,7 @@ export function InputComment(props: InputCommentProps) {
     <div className={styles.container}>
       <div className={styles.inputSection}>
         <Avatar
-          sx={{bgcolor: '#000000'}}
+          sx={{bgcolor: 'var(--soft-white)', color: 'primary.dark'}}
           src={user?.profile?.avatarUrl} 
           alt={user?.userName || 'User Avatar'}
           className={styles.avatar}
@@ -95,7 +92,7 @@ export function InputComment(props: InputCommentProps) {
           variant='standard'
           className={styles.formControl}
         >
-          <InputLabel htmlFor="my-input">
+          <InputLabel htmlFor="my-input" sx={{ color: 'primary.main' }}>
             {isAuthenticated ? "What are your thoughts on this post?" : "Please log in to leave a comment"}
           </InputLabel>
           <Input 
@@ -103,9 +100,18 @@ export function InputComment(props: InputCommentProps) {
             aria-describedby="my-helper-text" 
             value={comment} 
             onChange={(e) => setComment(e.target.value)} 
-            sx={{'&.Mui-focused': {
-            color: '#000000',
-          },}}
+            sx={{
+              color: 'primary.main',
+              '&:before': {
+                borderBottomColor: 'primary.main',
+              },
+              '&:after': { 
+                borderBottomColor: 'primary.main',
+              },
+              '&:hover:not(.Mui-disabled):before': {
+                borderBottomColor: 'primary.main',
+              },
+            }}
           />
         </FormControl>
       </div>
@@ -113,7 +119,7 @@ export function InputComment(props: InputCommentProps) {
       {isFocused && (
         <div className={styles.buttonSection}>
           <Button
-            sx={{borderRadius: '20px', color: '#000000', borderColor: '#000000'}}
+            sx={{borderRadius: '20px', color: 'var(--soft-white)', borderColor: 'var(--soft-white)'}}
             variant='outlined'
             onClick={handleCancel}
           >
@@ -121,7 +127,19 @@ export function InputComment(props: InputCommentProps) {
           </Button>
           
           <Button
-            sx={{borderRadius: '20px'}}
+            sx={{
+              borderRadius: '20px',
+              color: 'primary.dark',
+              backgroundColor: 'success.dark',
+              '&:disabled': {
+                backgroundColor: 'var(--grey)',
+                color: 'var(--soft-white)',
+                borderColor: 'var(--soft-white)'
+              },
+              '&:hover': {
+                boxShadow: '0 1px 8px rgba(255, 255, 255, 0.1)',
+              }
+            }}
             variant='contained'
             onClick={handleSubmit}
             disabled={comment.trim() === '' || isLoading}

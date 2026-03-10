@@ -62,9 +62,6 @@ export function MissionSection() {
 
   return (
     <section className={styles.section}>
-      <p></p>
-      <h2></h2>
-
       <div className={styles.timeline}>
         <div className={styles.timelineLine}/>
 

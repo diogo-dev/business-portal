@@ -1,0 +1,353 @@
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(160deg, hsl(220, 30%, 10%) 0%, hsl(220, 25%, 14%) 50%, hsl(225, 20%, 11%) 100%);
+  padding: 3rem 1rem 5rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.container {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.title {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 800;
+  color: hsl(0, 0%, 100%);
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 0.9rem;
+  color: hsl(215, 15%, 50%);
+  margin: 0 0 2.5rem;
+  font-weight: 400;
+}
+
+/* Avatar */
+.avatarWrapper {
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatarContainer {
+  position: relative;
+  border-radius: 9999px;
+  padding: 4px;
+  background: linear-gradient(135deg, hsl(150, 60%, 54%), hsl(170, 50%, 40%));
+  box-shadow:
+    0 0 30px hsla(150, 60%, 54%, 0.2),
+    0 0 60px hsla(150, 60%, 54%, 0.08);
+}
+
+.avatarInner {
+  border-radius: 9999px;
+  overflow: hidden;
+  background: hsl(220, 25%, 14%);
+  padding: 3px;
+}
+
+.avatarOverlay {
+  position: absolute;
+  inset: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: hsla(220, 25%, 8%, 0.7);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+
+.avatarContainer:hover .avatarOverlay {
+  opacity: 1;
+}
+
+.cameraIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: hsl(150, 60%, 54%);
+}
+
+.avatarName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: hsl(0, 0%, 95%);
+  margin: 0;
+}
+
+.avatarRole {
+  font-size: 0.8rem;
+  color: hsl(150, 60%, 54%);
+  margin: -0.25rem 0 0;
+  font-weight: 500;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+/* Section */
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-left: 0.25rem;
+}
+
+.sectionDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: hsl(150, 60%, 54%);
+  box-shadow: 0 0 8px hsla(150, 60%, 54%, 0.5);
+}
+
+.sectionTitle {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: hsl(215, 15%, 50%);
+  margin: 0;
+}
+
+/* Fields Grid */
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.fieldCardFull {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .fieldsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fieldCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 1rem;
+  border: 1px solid hsla(150, 60%, 54%, 0.08);
+  background: hsla(220, 25%, 16%, 0.6);
+  backdrop-filter: blur(12px);
+  padding: 0.875rem 1rem;
+  transition: all 0.25s ease;
+}
+
+.fieldCard:hover {
+  border-color: hsla(150, 60%, 54%, 0.2);
+  background: hsla(220, 25%, 18%, 0.7);
+  box-shadow: 0 4px 20px hsla(150, 60%, 54%, 0.06);
+}
+
+.fieldContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.fieldLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: hsl(215, 15%, 45%);
+  margin: 0 0 0.25rem;
+}
+
+.fieldValue {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: hsl(0, 0%, 93%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fieldInput {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid hsl(150, 60%, 54%);
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: hsl(0, 0%, 93%);
+  outline: none;
+  padding-bottom: 2px;
+}
+
+.editButton {
+  margin-left: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: 0.625rem;
+  border: 1px solid hsla(150, 60%, 54%, 0.15);
+  background: hsla(150, 60%, 54%, 0.08);
+  color: hsl(150, 60%, 54%);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editButton:hover {
+  background: hsla(150, 60%, 54%, 0.18);
+  border-color: hsla(150, 60%, 54%, 0.35);
+  box-shadow: 0 0 12px hsla(150, 60%, 54%, 0.15);
+}
+
+.icon {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+/* Social Links */
+.socialCard {
+  border-radius: 1rem;
+  border: 1px solid hsla(150, 60%, 54%, 0.08);
+  background: hsla(220, 25%, 16%, 0.6);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem;
+}
+
+.socialList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.socialRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.75rem;
+  transition: background 0.2s ease;
+}
+
+.socialRow:hover {
+  background: hsla(220, 25%, 20%, 0.5);
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: 0.625rem;
+  background: linear-gradient(135deg, hsla(150, 60%, 54%, 0.15), hsla(170, 50%, 40%, 0.1));
+  border: 1px solid hsla(150, 60%, 54%, 0.12);
+}
+
+.socialIcon svg {
+  width: 1rem;
+  height: 1rem;
+  color: hsl(150, 60%, 54%);
+}
+
+.socialContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.socialValue {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(215, 15%, 50%);
+}
+
+.socialValueFilled {
+  color: hsl(0, 0%, 93%);
+}
+
+.socialInput {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid hsl(150, 60%, 54%);
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(0, 0%, 93%);
+  outline: none;
+  padding-bottom: 2px;
+}
+
+.socialInput::placeholder {
+  color: hsl(215, 15%, 40%);
+  font-weight: 400;
+}
+
+/* Divider */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsla(150, 60%, 54%, 0.15), transparent);
+  margin: 0.5rem 0;
+  border: none;
+}
+
+/* Save Button */
+.saveButton {
+  display: block;
+  width: 100%;
+  padding: 0.9rem;
+  margin-top: 3rem;
+  border: 1px solid hsl(150, 60%, 54%);
+  border-radius: 1rem;
+  background: none;
+  color: hsl(150, 60%, 54%);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px hsla(150, 60%, 54%, 0.25);
+}
+
+.saveButton:disabled {
+  background: hsla(150, 60%, 54%, 0.08);
+  border-color: hsla(150, 60%, 54%, 0.08);
+  color: hsl(150, 60%, 54%, 0.5);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.saveButton:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.saveButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px hsla(150, 60%, 54%, 0.35);
+}
+
+.saveButton:active {
+  transform: translateY(0);
+}

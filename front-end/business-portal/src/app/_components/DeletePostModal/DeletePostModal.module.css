@@ -26,8 +26,8 @@
 
 /* Container do modal */
 .modal {
-  background-color: var(--background);
-  border: 1px solid #d1d5db;
+  background: var(--main-gradient);
+  border: 1px solid var(--tech-green);
   border-radius: 16px;
   max-width: 550px;
   width: 100%;
@@ -67,12 +67,12 @@
   justify-content: center;
   border-radius: 8px;
   transition: background-color 0.2s;
-  color: var(--foreground);
+  color: var(--soft-white);
   z-index: 1;
 }
 
 .closeButton:hover {
-  background-color: #f3f4f6;
+  background-color: black;
 }
 
 /* Header do modal */
@@ -85,12 +85,12 @@
   width: 64px;
   height: 64px;
   margin: 0 auto 1rem;
-  background: #fee2e2;
+  background: black;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #dc2626;
+  color: var(--tech-green);
   transition: background-color 0.5s ease, transform 0.3s ease;
 }
 
@@ -134,7 +134,7 @@
   margin: 0 0 0.5rem 0;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #000;
+  color: var(--soft-white);
 }
 
 /* Descrição */
@@ -152,8 +152,8 @@
 
 /* Warning box */
 .warningBox {
-  background: #fef2f2;
-  border: 2px solid #fecaca;
+  background: black;
+  border: 2px solid var(--tech-green);
   border-radius: 12px;
   padding: 1.25rem;
   margin: 2rem 0;
@@ -163,7 +163,7 @@
 }
 
 .warningIcon {
-  color: #dc2626;
+  color: var(--tech-green);
   flex-shrink: 0;
   margin-top: 0.125rem;
 }
@@ -176,14 +176,14 @@
   margin: 0 0 0.75rem 0;
   font-size: 1rem;
   font-weight: 700;
-  color: #991b1b;
+  color: var(--tech-green);
 }
 
 .warningList {
   margin: 0;
   padding-left: 1.25rem;
   list-style: disc;
-  color: #991b1b;
+  color: var(--tech-green);
   font-size: 0.875rem;
   line-height: 1.8;
 }
@@ -221,9 +221,9 @@
   padding: 1rem 2rem;
   font-size: 1rem;
   font-weight: 600;
-  background-color: #1a1a1a;
+  background-color: black;
   color: white;
-  border: 2px solid #1a1a1a;
+  border: none;
   border-radius: 0.5rem;
   cursor: pointer;
   font-family: inherit;
@@ -232,14 +232,13 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+  box-shadow: 0 2px 4px var(--box-shadow);
 }
 
 .deleteButton:hover:not(:disabled) {
-  background-color: #b91c1c;
-  border-color: #b91c1c;
+  color: red;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 4px 8px var(--box-shadow);
 }
 
 .deleteButton:active:not(:disabled) {

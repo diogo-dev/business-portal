@@ -6,6 +6,7 @@ import Link from 'next/link';
 import styles from './Header.module.css';
 import { useAuth } from '../../_context/AuthContext';
 import { FiLogOut } from "react-icons/fi";
+import { LuUser } from "react-icons/lu";
 import { NavDropDown } from '../NavDropDown/NavDropDown';
 
 export function Header() {
@@ -91,7 +92,9 @@ export function Header() {
                   </div>
                 
                   <div className={styles.rightSection}>
-                    <span className={styles.userName}>Hello, {user?.userName}</span>
+                    <Link href="/profile">
+                      <LuUser className={styles.userIcon} />
+                    </Link>
                     <button 
                       className={styles.logoutButton} 
                       onClick={logout}

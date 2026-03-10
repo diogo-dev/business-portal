@@ -2,6 +2,7 @@ import styles from './page.module.css';
 import { PostTabs } from '../_components/PostTabs/PostTabs';
 import { PostGridWrapper } from '../_components/PostGridWrapper/PostGridWrapper';
 import { Suspense } from 'react';
+import { PostMenu } from '../_components/PostMenu/PostMenu';
 
 export type PostSearchParams = {
   tab?: 'form' | 'draft' | 'published' | 'archived';
@@ -18,7 +19,10 @@ export default async function ManagePost({ searchParams }: { searchParams: Promi
     <div className={styles.container}>
       {/* Header Section */}
       <div className={styles.header}>
-        <h1 className={styles.mainTitle}>Create Post Publication</h1>
+        <div className={styles.titleContainer}>
+          <h1 className={styles.mainTitle}>Create Post Publication</h1>
+          <PostMenu />
+        </div>
         <p className={styles.subtitle}>
           Create and manage your blog posts
         </p>

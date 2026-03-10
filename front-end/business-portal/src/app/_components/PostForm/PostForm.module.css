@@ -159,8 +159,8 @@
 
 .submitButton {
   padding: 0.75rem 2rem;
-  background-color: #1a1a1a;
-  color: white;
+  background-color: var(--soft-white);
+  color: var(--light-dark);
   border: none;
   border-radius: 0.375rem;
   font-size: 1rem;
@@ -170,9 +170,8 @@
 }
 
 .submitButton:hover {
-  background-color: #000000;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--box-shadow);
 }
 
 .submitButton:active {

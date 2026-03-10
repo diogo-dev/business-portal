@@ -84,7 +84,6 @@ export function PostGrid({
       }, 2000);
 
     } catch (error: any) {
-      console.error(`Error ${status} post:`, error);
       toast.error(error.message || 'An unexpected error occurred');
       setIsLoading?.(false);
     }
@@ -164,48 +163,6 @@ export function PostGrid({
           <p className={styles.successText}>Post archived successfully!</p>
         </div>
       )}
-
-
-      {selectedPostId && (
-        <div className={styles.actionButtonContainer}>
-          {postStatus === 'draft' && (
-            <>
-              <button 
-                className={styles.actionButton}
-                onClick={() => setShowEditModal(true)}
-              >
-                Edit Post
-              </button>
-
-              <button 
-                className={styles.actionButton}
-                onClick={(e) => handlePublishOrArchive(selectedPostId, 'publish', e)}
-              >
-                Publish Post
-              </button>
-
-            </>
-          )}
-          {postStatus === 'published' && (
-            <>
-              <button 
-                className={styles.actionButton}
-                onClick={() => setShowEditModal(true)}
-              >
-                Edit Post
-              </button>
-
-              <button 
-                className={styles.actionButton}
-                onClick={(e) => handlePublishOrArchive(selectedPostId, 'archive', e)}
-              >
-                Archive Post
-              </button>
-
-            </>
-          )}
-        </div>
-      )}
       
       <div className={styles.container}>
         <div className={styles.postsGrid} onClick={handleGridClick}>
@@ -217,14 +174,17 @@ export function PostGrid({
                 imageUrl={post.coverImageUrl}
                 title={post.title}
                 slug={post.slug}
+                status={post.status}
                 summary={post.summary || post.content.substring(0, 150) + '...'}
                 date={new Date(postStatus === 'published' ? post.publishedAt || post.createdAt : post.createdAt).toLocaleDateString('pt-BR')}
                 updatedAt={postStatus === 'published' && post.updatedAt ? new Date(post.updatedAt).toLocaleDateString('pt-BR') : undefined}
                 showUpdatedDate={postStatus === 'published' && post.updatedAt ? new Date(post.updatedAt).getTime() > new Date(post.publishedAt || post.createdAt).getTime() : false}
                 isSelected={selectedPostId === post.id}
-                isDeletable={postStatus === 'draft' && selectedPostId === post.id}
+                isForBlog={false}
                 onClick={(e) => handlePostClick(post, e)}
                 onDelete={(e) => setShowDeleteModal(true)}
+                onUpdate={(e) => setShowEditModal(true)}
+                onHandlePublishOrArchive={(e, status) => handlePublishOrArchive(post.id, status, e)}
               />
             ))
           }
@@ -237,8 +197,13 @@ export function PostGrid({
               page={metaData.currentPage}
               onChange={(event, page) => onPageChange?.(page)}
               shape='rounded'
-              color='primary'
               size='medium'
+              sx={{
+                '& .MuiPaginationItem-root': {
+                  color: 'success.main',
+                }             
+             }}
+              color='primary'
             />
           )}
         </div>

@@ -2,7 +2,7 @@
 .tabContainer {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--tech-green);
   margin-bottom: 2rem;
 }
 
@@ -22,11 +22,11 @@
 }
 
 .tab:hover {
-  color: #1a1a1a;
+  color: white;
 }
 
 .tabActive {
-  color: #1a1a1a;
+  color: white;
   font-weight: 600;
 }
 
@@ -37,7 +37,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #1a1a1a;
+  background: var(--ternary-gradient);
 }
 
 @media (max-width: 768px) {

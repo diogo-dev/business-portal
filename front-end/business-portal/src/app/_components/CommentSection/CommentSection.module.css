@@ -1,5 +1,19 @@
 .container {
   margin-top: 48px;
   padding-top: 24px;
-  border-top: 1px solid rgba(230, 230, 230, 1);
+  position: relative;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(160deg, var(--dark-tech-green) 40%, #ffffff 60%);
+}  
+
+.commentTitle {
+  color: var(--soft-white);
 }

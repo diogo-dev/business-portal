@@ -24,8 +24,8 @@
 }
 
 .modal {
-  background-color: var(--background);
-  border: 1px solid #d1d5db;
+  background: var(--main-gradient);
+  border: 1px solid var(--tech-green);
   border-radius: 16px;
   max-width: 800px;
   width: 100%;
@@ -52,10 +52,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--tech-green);
   position: sticky;
   top: 0;
-  background-color: var(--background);
+  background: var(--main-gradient);
   z-index: 10;
   transition: all 0.4s ease;
 }
@@ -103,7 +103,7 @@
 .modalTitle {
   font-size: 24px;
   font-weight: 600;
-  color: var(--foreground);
+  color: var(--soft-white);
   margin: 0;
   transition: color 0.3s ease;
 }
@@ -172,11 +172,11 @@
   justify-content: center;
   border-radius: 8px;
   transition: background-color 0.2s;
-  color: var(--foreground);
+  color: var(--soft-white);
 }
 
 .closeButton:hover {
-  background-color: #f3f4f6;
+  background-color: black;
 }
 
 .modalContent {
@@ -270,13 +270,12 @@
 }
 
 .submitButton {
-  background-color: #1a1a1a;
+  background-color: black;
   color: white;
 }
 
 .submitButton:hover:not(:disabled) {
-  background-color: #000000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--box-shadow);
 }
 
 .cancelButton:disabled,

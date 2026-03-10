@@ -1,7 +1,6 @@
 .section {
   width: 100vw;
   padding: 80px 40px;
-  background-color: var(--light-dark);
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -130,9 +129,10 @@
 
 /* Card */
 .card {
-  background: #ffffff;
+  background: #ebebeb;
   border-radius: 16px;
   padding: 28px 32px;
+  
   max-width: 380px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 171, 108, 0.5), 0 0 40px rgba(0, 171, 108, 0.3), 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -150,7 +150,7 @@
   font-size: 15px;
   text-align: justify;
   line-height: 1.5;
-  color: #6b7280;
+  color: var(--grey);
   margin: 0;
 }
 

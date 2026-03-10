@@ -8,7 +8,7 @@ interface DisplayCommentsProps {
 
 export function DisplayComments({ comments }: DisplayCommentsProps) {
   if (comments.length === 0) {
-    return <Typography color="textSecondary">No comments yet. Be the first!</Typography>;
+    return <Typography color="var(--soft-white)">No comments yet. Be the first!</Typography>;
   }
 
   return (
@@ -17,27 +17,26 @@ export function DisplayComments({ comments }: DisplayCommentsProps) {
         <Box key={comment.id} sx={{ display: 'flex', gap: 2 }}>
           <Avatar 
             src={comment.author?.profile?.avatarUrl} 
-            sx={{ bgcolor: '#000000', width: 30, height: 30 }}
+            sx={{bgcolor: 'var(--soft-white)', color: 'primary.dark', width: 30, height: 30}}
           >
             {comment.author?.userName?.charAt(0).toUpperCase() || 'U'}
           </Avatar>
           
           <Box sx={{ flex: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mb: 0.5 }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'primary.light' }}>
                 {comment.author?.userName}
               </Typography>
-              <Typography variant="caption" color="textSecondary">
+              <Typography variant="caption" color="primary.light">
                 {new Date(comment.createdAt).toLocaleDateString()}
               </Typography>
             </Box>
-            <Typography variant="body2" sx={{ color: '#333', lineHeight: 1.6 }}>
+            <Typography variant="body2" sx={{ color: 'primary.main', lineHeight: 1.6 }}>
               {comment.content}
             </Typography>
           </Box>
         </Box>
       ))}
-      <Divider sx={{ my: 2 }} />
     </Box>
   );
 }

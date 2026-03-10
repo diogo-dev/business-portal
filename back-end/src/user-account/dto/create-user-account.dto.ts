@@ -1,5 +1,6 @@
-import { IsString, IsNotEmpty, IsOptional, IsArray, IsIn } from "class-validator";
-import { Profile } from "../entities/profile.entity";
+import { IsString, IsNotEmpty, IsOptional, IsArray, IsIn, ValidateNested, IsObject } from "class-validator";
+import { Type } from "class-transformer";
+import { CreateProfileDto } from "./create-profile.dto";
 
 export class CreateUserAccountDto {
 
@@ -13,14 +14,13 @@ export class CreateUserAccountDto {
 
     @IsNotEmpty()
     @IsString()
-    phone: string;
-
-    @IsNotEmpty()
-    @IsString()
     userName: string;
 
-    // @IsNotEmpty()
-    profile: Profile;
+    @IsNotEmpty()
+    @IsObject()
+    @ValidateNested()
+    @Type(() => CreateProfileDto)
+    profile: CreateProfileDto;
 
     @IsOptional()
     @IsArray()

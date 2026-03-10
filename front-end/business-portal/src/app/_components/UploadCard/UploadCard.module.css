@@ -4,15 +4,15 @@
     align-items: center;
     text-align: center;
     padding: 2.5rem 2rem;
-    background: var(--background);
-    border: 2px solid var(--grey);
+    background: var(--light-dark);
+    border: 2px solid hsla(150, 60%, 54%, 0.08);
     border-radius: 16px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .uploadCard:hover {
-    border-color: #00033b;
+    border-color: hsla(150, 60%, 54%, 0.2);
     box-shadow: 0 12px 32px rgba(0, 3, 59, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
     transform: translateY(-4px);
 }
@@ -31,19 +31,19 @@
 }
 
 .uploadCard:hover .cardIcon {
-    background: #00033b;
+    background: var(--dark-tech-green);
     color: white;
     transform: scale(1.1);
 }
 
 .uploadCard.dragging {
-    border-color: #00033b;
+    border-color: black;
     box-shadow: 0 12px 32px rgba(0, 3, 59, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
     transform: translateY(-4px);
 }
 
 .uploadCard.dragging .cardIcon {
-    background: #00033b;
+    background: var(--dark-tech-green);
     color: white;
     transform: scale(1.1);
 }
@@ -51,13 +51,13 @@
 .cardTitle {
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--foreground);
+    color: var(--dark-tech-green);
     margin: 0 0 0.75rem 0;
 }
 
 .cardDescription {
     font-size: 1rem;
-    color: #666;
+    color: var(--soft-white);
     margin: 0;
     line-height: 1.6;
 }

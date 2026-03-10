@@ -26,14 +26,18 @@ export default async function seedUsers(userAccountService: UserAccountService, 
         {
             email: 'admin@example.com',
             passwordHash: '123456',
-            phone: '5544999999001',
+            profile: {
+                phone: '5544999999001'
+            },
             userName: 'admin',
             roleNames: ['admin']
         },
         {
             email: 'user@example.com',
             passwordHash: '123456',
-            phone: '5544999999003',
+            profile: {
+                phone: '5544999999003'
+            },
             userName: 'user'
         }
     ];
