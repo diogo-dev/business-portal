@@ -9,11 +9,14 @@ import { postFormData } from '@/app/api';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
-export default function PostForm() {
+export default function EventForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [title, setTitle] = useState('');
+  const [location, setLocation] = useState('');
+  const [startsAt, setStartsAt] = useState<Date | undefined>(undefined);
+  const [endsAt, setEndsAt] = useState<Date | undefined>(undefined);
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -29,10 +32,18 @@ export default function PostForm() {
       formData.append('title', title);
       formData.append('summary', summary);
       formData.append('content', content);
-      
+      formData.append('location', location);
+      if (startsAt) {
+        formData.append('startsAt', startsAt.toISOString());
+      }
+      if (endsAt) {
+        formData.append('endsAt', endsAt.toISOString());
+      }
       if (imageFile) {
         formData.append('file', imageFile);
       }
+
+      // Validate start and end times
 
       const token = localStorage.getItem('token');
       if (!token) {
@@ -59,22 +70,28 @@ export default function PostForm() {
       setTitle('');
       setSummary('');
       setContent('');
+      setLocation('');
+      setStartsAt(undefined);
+      setEndsAt(undefined);
       setImageFile(null);
       
       // After 2 seconds, navigate to drafts and refresh server data
       setTimeout(() => {
         setIsSuccess(false);
-        router.push('/manage-post?tab=draft');
+        router.push('/manage-events?tab=draft');
         router.refresh();
       }, 2000);
       
     } catch (error: any) {
-      console.error('Error submitting post:', error);
       toast.error(error.message || 'An unexpected error occurred');
       setIsLoading(false);
     }
   }
 
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return '';
+    return date.toISOString().split('T')[0];
+  }
 
   return (
     <>
@@ -82,7 +99,7 @@ export default function PostForm() {
       {isLoading && (
         <div className={styles.loadingOverlay}>
           <div className={styles.loadingSpinner} />
-          <p className={styles.loadingText}>Creating your post...</p>
+          <p className={styles.loadingText}>Creating your event...</p>
         </div>
       )}
 
@@ -111,7 +128,7 @@ export default function PostForm() {
               strokeLinejoin="round"
             />
           </svg>
-          <p className={styles.successText}>Post created successfully!</p>
+          <p className={styles.successText}>Event created successfully!</p>
         </div>
       )}
 
@@ -122,26 +139,48 @@ export default function PostForm() {
 
         <div className={styles.titleAndSummary}>
           <InputCard
-            title="Post Title"
+            title="Event Title"
             inputType="text"
-            placeholder="Enter the title of your post"
+            placeholder="Enter the title of your event"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
           <InputCard
-            title="Post Summary"
+            title="Event Summary"
             inputType="text"
-            placeholder="Enter a brief summary of your post"
+            placeholder="Enter an event summary"
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
           />
         </div>
 
+        <div className={styles.placeAndTime}>
+          <InputCard
+            title="Event Location"
+            inputType="text"
+            placeholder="Enter the location of your event"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+          <InputCard
+            title="Start Time"
+            inputType="date"
+            value={formatDate(startsAt)}
+            onChange={(e) => setStartsAt(e.target.value ? new Date(e.target.value) : undefined)}
+          />
+          <InputCard
+            title="End Time"
+            inputType="date"
+            value={formatDate(endsAt)}
+            onChange={(e) => setEndsAt(e.target.value ? new Date(e.target.value) : undefined)}
+          />
+        </div>
+
         <div className={styles.section}>
           <TextareaCard 
-            title="Post Content"
-            placeholder="Write the content of your post here..."
+            title="Event Content"
+            placeholder="Write the content of your event here..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
@@ -154,7 +193,7 @@ export default function PostForm() {
               onClick={handleSubmit}
               disabled={!title || !content || isLoading}
             >
-              Create Post
+              Create Event
             </button>
           </div>
       </div>

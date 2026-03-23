@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Avatar } from "@mui/material";
-import { LuPencil, LuCheck, LuCamera, LuInstagram, LuTwitter, LuFacebook } from "react-icons/lu";
+import { LuPencil, LuCheck, LuInstagram, LuTwitter, LuFacebook } from "react-icons/lu";
 import styles from "./page.module.css";
-import { get, patch } from "../api";
+import { get, patchFormData } from "../api";
 import { toast } from "sonner";
 import CircularProgress from '@mui/material/CircularProgress';
+import { ProfilePicture } from "../_components/ProfilePicture/ProfilePicture";
 
 interface ProfileField {
   label: string;
@@ -48,6 +48,7 @@ const Profile = () => {
   const [isDirty, setIsDirty] = useState<boolean>(false);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLinks>({
     facebook: "",
     instagram: "",
@@ -164,14 +165,16 @@ const Profile = () => {
       }
     });
     
-    // Add social links and avatar
+    // Add social links 
     profileData.socialLinks = socialLinks;
-    if (avatarUrl) {
-      profileData.avatarUrl = avatarUrl;
-    }
 
-    const body = {
-      profile: profileData
+    // Build form data
+    const formData = new FormData();
+
+    formData.append('profile', JSON.stringify(profileData));
+
+    if (avatarFile) {
+      formData.append('file', avatarFile);
     }
 
     try {
@@ -183,7 +186,7 @@ const Profile = () => {
       }
 
       const [res] = await Promise.all([
-        patch('/auth/me', body, token),
+        patchFormData('/auth/me', formData, token),
         delay(1000)
       ])
 
@@ -213,11 +216,6 @@ const Profile = () => {
     } else {
       setter((prev) => prev.map((f) => (f.key === key ? { ...f, value: newValue } : f)));
     }
-  };
-
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) setAvatarUrl(URL.createObjectURL(file));
   };
 
   const handleSocialChange = (platform: keyof SocialLinks, value: string) => {
@@ -280,36 +278,15 @@ const Profile = () => {
         <p className={styles.subtitle}>Manage your personal information and preferences</p>
 
         {/* Avatar */}
-        <div className={styles.avatarWrapper}>
-          <div className={styles.avatarContainer}>
-            <div className={styles.avatarInner}>
-              <Avatar
-                src={avatarUrl || undefined}
-                sx={{
-                  width: 110,
-                  height: 110,
-                  fontSize: 40,
-                  fontWeight: 700,
-                  bgcolor: "hsl(220, 25%, 18%)",
-                  color: "hsl(150, 60%, 54%)",
-                }}
-              >
-                {!avatarUrl && "JD"}
-              </Avatar>
-            </div>
-            <label className={styles.avatarOverlay}>
-              <LuCamera className={styles.cameraIcon} />
-              <input
-                type="file"
-                accept="image/*"
-                className={styles.hiddenInput}
-                onChange={handleAvatarChange}
-              />
-            </label>
-          </div>
-          <p className={styles.avatarName}>{personalFields.find((f) => f.key === "firstName")?.value || "User Name"}</p>
-          <p className={styles.avatarRole}>{personalFields.find((f) => f.key === "occupation")?.value || "Occupation"}</p>
-        </div>
+        <ProfilePicture
+          firstName={personalFields.find((f) => f.key === "firstName")?.value || "User Name"}
+          occupation={personalFields.find((f) => f.key === "occupation")?.value || "Occupation"}
+          avatarUrl={avatarUrl}
+          onFileSelect={(file) => {
+            setAvatarFile(file);
+            setIsDirty(true);
+          }}
+        />
 
         {/* Personal Info */}
         <div className={styles.section}>

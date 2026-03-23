@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { Event } from './entities/event.entity';
 import { UserAccountService } from 'src/user-account/user-account.service';
+import { PostStatus } from 'src/post/enum/post-status.enum';
 
 @Injectable()
 export class EventService {
@@ -43,6 +44,31 @@ export class EventService {
     // return event;
   }
 
+  async findPaginatedEventsByStatus(page: number, limit: number, status: PostStatus) {
+    const offset = (page - 1) * limit;
+    const orderBy = status === PostStatus.DRAFT ? 'event.createdAt' : 'event.publishedAt';
+
+    const [events, total] = await this.eventRepository
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.creator', 'creator')
+      .where('event.status = :status', { status })
+      .orderBy(orderBy, 'DESC')
+      .offset(offset)
+      .limit(limit)
+      .getManyAndCount();
+
+    return {
+      events: events, 
+      meta: {
+        totalItems: total, 
+        itemCount: events.length,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(total / limit),
+        currentPage: page
+      }
+    }
+  }
+
   async update(id: string, dto: UpdateEventDto): Promise<Event> {
     const event = await this.findOne(id);
     //this.eventRepository.merge(event, dto);
@@ -52,5 +78,43 @@ export class EventService {
   async remove(id: string): Promise<Event> {
     const event = await this.findOne(id);
     return await this.eventRepository.remove(event);
+  }
+
+  async publishEvent(id: string): Promise<Event> {
+    const event = await this.findOne(id);
+
+    if (event.status === PostStatus.PUBLISHED) return event;
+    if (event.status !== PostStatus.DRAFT) {
+      throw new Error ('Only draft event can be published');
+    }
+
+    await this.eventRepository
+      .createQueryBuilder()
+      .update(Event)
+      .set({
+        status: PostStatus.PUBLISHED,
+        publishedAt: new Date()
+      })
+      .where('id = :id', { id })
+      .execute();
+
+    return await this.findOne(id);
+  }
+
+  async archiveEvent(id: string): Promise<Event> {
+    const event = await this.findOne(id);
+
+    if (event.status === PostStatus.ARCHIVED) {
+      throw new Error('Event is already archived');
+    }
+
+    await this.eventRepository
+      .createQueryBuilder()
+      .update(Event)
+      .set({ status: PostStatus.ARCHIVED })
+      .where('id = :id', { id })
+      .execute();
+      
+    return await this.findOne(id);
   }
 }

@@ -1,5 +1,5 @@
-import { Profile } from './profile.types';
 import { User } from './user.types';
+import { Comment } from './comment.types';
 
 export interface Post {
   id: string;
@@ -14,14 +14,6 @@ export interface Post {
   updatedAt?: string;
   author?: User;
   comments: Comment[];
-}
-
-export interface MetaData {
-  totalItems: number;
-  itemCount: number;
-  itemsPerPage: number;
-  totalPages: number;
-  currentPage: number;
 }
 
 

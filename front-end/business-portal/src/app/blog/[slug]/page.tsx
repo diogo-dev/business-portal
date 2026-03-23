@@ -18,7 +18,6 @@ async function getPost(slug: string): Promise<Post | null> {
     if (!response.ok) return null;
     return await response.json();
   } catch (error) {
-    console.log('Error fetching post:', error);
     return null;
   }
 }

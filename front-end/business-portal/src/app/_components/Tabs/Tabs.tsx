@@ -1,15 +1,17 @@
 "use client";
 
-import styles from './PostTabs.module.css';
+import styles from './Tabs.module.css';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 
 
-interface PostTabsProps {
+interface TabsProps {
   activeTab: 'form' | 'draft' | 'published' | 'archived';
+  path: string;
+  tabButtons: string[];
 }
 
-export function PostTabs({ activeTab }: PostTabsProps) {
+export function Tabs({ activeTab, path, tabButtons }: TabsProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -17,7 +19,7 @@ export function PostTabs({ activeTab }: PostTabsProps) {
     const params = new URLSearchParams(searchParams.toString());
     params.set('tab', tab);
     params.delete('page'); 
-    router.push(`/manage-post?${params.toString()}`);
+    router.push(`${path}?${params.toString()}`);
   }
 
   return (
@@ -26,25 +28,25 @@ export function PostTabs({ activeTab }: PostTabsProps) {
         className={`${styles.tab} ${activeTab === 'form' ? styles.tabActive : ''}`}
         onClick={() => handleTabChange('form')}
       >
-        Post Form
+        {tabButtons[0]}
       </button>
       <button
         className={`${styles.tab} ${activeTab === 'draft' ? styles.tabActive : ''}`}
         onClick={() => handleTabChange('draft')}
       >
-        Created Post
+        {tabButtons[1]}
       </button>
       <button
         className={`${styles.tab} ${activeTab === 'published' ? styles.tabActive : ''}`}
         onClick={() => handleTabChange('published')}
       >
-        Published Post
+        {tabButtons[2]}
       </button>
       <button
         className={`${styles.tab} ${activeTab === 'archived' ? styles.tabActive : ''}`}
         onClick={() => handleTabChange('archived')}
       >
-        Archived Post
+        {tabButtons[3]}
       </button>
     </div>
   );

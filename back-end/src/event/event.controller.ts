@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Request, UseInterceptors, BadRequestException, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Request, UseInterceptors, BadRequestException, UploadedFile, Query } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -7,6 +7,8 @@ import { Public } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'src/upload/upload.service';
+import { PaginationDto } from 'src/post/dto/pagination.dto';
+import { PostStatus } from 'src/post/enum/post-status.enum';
 
 
 @Controller('event')
@@ -51,6 +53,16 @@ export class EventController {
     return this.eventService.findOne(id);
   }
 
+  @Public()
+  @Get('status')
+  findByStatus(@Query('status') query: PaginationDto) {
+    const {page = 1, limit = 6, status} = query;
+
+    const validStatus = status ? (status as PostStatus) : PostStatus.PUBLISHED;
+
+    return this.eventService.findPaginatedEventsByStatus(page, limit, validStatus);
+  }
+
   @Patch(':id')
   @Roles('admin')
   @UseInterceptors(FileInterceptor('file', {
@@ -90,5 +102,17 @@ export class EventController {
     }
 
     return this.eventService.remove(id);
+  }
+
+  @Patch(':id/publish')
+  @Roles('admin')
+  publish(@Param('id', ParseUUIDPipe) id: UUID) {
+    return this.eventService.publishEvent(id);
+  }
+
+  @Patch(':id/archive')
+  @Roles('admin')
+  archive(@Param('id', ParseUUIDPipe) id: UUID) {
+    return this.eventService.archiveEvent(id);
   }
 }

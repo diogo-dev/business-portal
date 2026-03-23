@@ -8,7 +8,8 @@ import { toast } from 'sonner';
 import { EditPostModal } from '../EditPostModal/EditPostModal';
 import { DeletePostModal } from '../DeletePostModal/DeletePostModal';
 import Pagination from '@mui/material/Pagination';
-import { Post, MetaData } from '../../_types/post.types';
+import { Post } from '../../_types/post.types';
+import { MetaData } from '../../_types/metadata.type';
 
 interface PostGridProps {
   posts: Post[];

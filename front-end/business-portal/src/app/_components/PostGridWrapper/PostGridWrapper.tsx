@@ -1,7 +1,8 @@
 import styles from './PostGridWrapper.module.css';
 import { get } from '../../api';
-import { PostForm } from '../PostForm/PostForm';
-import { PostGridClient } from '../PostGridClient/PostGridClient';
+import PostForm  from '../PostForm/PostForm';
+import PostGridClient  from '../PostGridClient/PostGridClient';
+import { toast } from 'sonner';
 
 interface PostGridWrapperProps {
   activeTab: 'form' | 'draft' | 'published' | 'archived';
@@ -17,12 +18,12 @@ async function fetchPosts(page: number, status: string, limit: number = 9) {
     }
 
     return await response.json();
-  } catch (error) {
-    console.error('Error fetching posts:', error);
+  } catch (err: any) {
+    toast.error(err.message || 'Failed to fetch posts');
   }
 }
 
-export async function PostGridWrapper({ activeTab, page }: PostGridWrapperProps) {
+export default async function PostGridWrapper({ activeTab, page }: PostGridWrapperProps) {
   if (activeTab === 'form') {
     return <PostForm />;
   }
@@ -43,7 +44,6 @@ export async function PostGridWrapper({ activeTab, page }: PostGridWrapperProps)
       posts={posts}
       metaData={meta}
       postStatus={activeTab}
-      currentPage={page}
     />
   );
 

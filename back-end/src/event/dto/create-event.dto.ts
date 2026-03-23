@@ -12,7 +12,11 @@ export class CreateEventDto {
     title: string;
 
     @IsString()
-    description: string;
+    @IsNotEmpty()
+    summary: string;
+
+    @IsString()
+    content: string;
 
     @IsString()
     location: string;

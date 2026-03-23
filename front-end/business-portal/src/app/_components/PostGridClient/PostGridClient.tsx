@@ -1,7 +1,8 @@
 "use client";
 
 import { PostGrid } from '../PostGrid/PostGrid';
-import { Post, MetaData } from '../../_types/post.types';
+import { Post } from '../../_types/post.types';
+import { MetaData } from '../../_types/metadata.type';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -9,14 +10,12 @@ interface PostGridClientProps {
   posts: Post[];
   metaData: MetaData;
   postStatus: 'draft' | 'published' | 'archived';
-  currentPage: number;
 }
 
-export function PostGridClient({
+export default function PostGridClient({
   posts,
   metaData,
-  postStatus,
-  currentPage
+  postStatus
 }: PostGridClientProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

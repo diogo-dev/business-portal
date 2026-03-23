@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsOptional, IsArray, IsIn, ValidateNested, IsObject } from "class-validator";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { CreateProfileDto } from "./create-profile.dto";
 
 export class CreateUserAccountDto {

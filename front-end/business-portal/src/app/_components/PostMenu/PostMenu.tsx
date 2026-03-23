@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
-export function PostMenu() {
+export default function PostMenu() {
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -58,7 +58,7 @@ export function PostMenu() {
         anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
         transformOrigin={{vertical: 'top', horizontal: 'right'}}
       >
-        <MenuItem onClick={handleClose}>Post Category</MenuItem>
+        <MenuItem onClick={handleMenuItemClick}>Post Category</MenuItem>
       </Menu>
     </>
   );

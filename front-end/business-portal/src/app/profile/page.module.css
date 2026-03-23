@@ -1,7 +1,6 @@
 .page {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(160deg, hsl(220, 30%, 10%) 0%, hsl(220, 25%, 14%) 50%, hsl(225, 20%, 11%) 100%);
   padding: 3rem 1rem 5rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -26,74 +25,6 @@
   color: hsl(215, 15%, 50%);
   margin: 0 0 2.5rem;
   font-weight: 400;
-}
-
-/* Avatar */
-.avatarWrapper {
-  margin-bottom: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.avatarContainer {
-  position: relative;
-  border-radius: 9999px;
-  padding: 4px;
-  background: linear-gradient(135deg, hsl(150, 60%, 54%), hsl(170, 50%, 40%));
-  box-shadow:
-    0 0 30px hsla(150, 60%, 54%, 0.2),
-    0 0 60px hsla(150, 60%, 54%, 0.08);
-}
-
-.avatarInner {
-  border-radius: 9999px;
-  overflow: hidden;
-  background: hsl(220, 25%, 14%);
-  padding: 3px;
-}
-
-.avatarOverlay {
-  position: absolute;
-  inset: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  background: hsla(220, 25%, 8%, 0.7);
-  backdrop-filter: blur(4px);
-  opacity: 0;
-  cursor: pointer;
-  transition: opacity 0.25s ease;
-}
-
-.avatarContainer:hover .avatarOverlay {
-  opacity: 1;
-}
-
-.cameraIcon {
-  width: 1.75rem;
-  height: 1.75rem;
-  color: hsl(150, 60%, 54%);
-}
-
-.avatarName {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: hsl(0, 0%, 95%);
-  margin: 0;
-}
-
-.avatarRole {
-  font-size: 0.8rem;
-  color: hsl(150, 60%, 54%);
-  margin: -0.25rem 0 0;
-  font-weight: 500;
-}
-
-.hiddenInput {
-  display: none;
 }
 
 /* Section */

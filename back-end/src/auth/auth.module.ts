@@ -5,10 +5,12 @@ import { UserAccountModule } from 'src/user-account/user-account.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import type { StringValue } from 'ms';
+import { UploadModule } from 'src/upload/upload.module';
 
 @Module({
   imports: [
     UserAccountModule,
+    UploadModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

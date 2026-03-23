@@ -1,0 +1,27 @@
+.dropZone {
+  border: 2px dashed var(--box-shadow);
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  max-width: 400px;
+}
+
+.over {
+  border: 2px dashed rgba(166, 2, 2, 0.579);
+}
+
+.trashIcon {
+  font-size: 2rem;
+  color: var(--dark-tech-green);
+}
+
+.dropText {
+  margin-top: 0.5rem;
+  color: var(--soft-white);
+  font-weight: bold;
+}

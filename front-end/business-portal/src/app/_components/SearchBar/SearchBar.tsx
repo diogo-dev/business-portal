@@ -1,3 +1,4 @@
+"use client";
 import { useState, type ChangeEvent, type FC } from "react";
 import { LuSearch } from "react-icons/lu";
 import styles from "./SearchBar.module.css";

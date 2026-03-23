@@ -4,6 +4,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import type { UUID } from 'crypto';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller('category')
 export class CategoryController {
@@ -15,6 +16,7 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.categoryService.findAll();

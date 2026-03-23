@@ -1,8 +1,8 @@
 import styles from './page.module.css';
-import { PostTabs } from '../_components/PostTabs/PostTabs';
-import { PostGridWrapper } from '../_components/PostGridWrapper/PostGridWrapper';
+import { Tabs } from '../_components/Tabs/Tabs';
+import PostGridWrapper from '../_components/PostGridWrapper/PostGridWrapper';
 import { Suspense } from 'react';
-import { PostMenu } from '../_components/PostMenu/PostMenu';
+import PostMenu from '../_components/PostMenu/PostMenu';
 
 export type PostSearchParams = {
   tab?: 'form' | 'draft' | 'published' | 'archived';
@@ -29,7 +29,11 @@ export default async function ManagePost({ searchParams }: { searchParams: Promi
       </div>
       
       {/* Tab Navigation */}
-      <PostTabs activeTab={activeTab} />
+      <Tabs 
+        activeTab={activeTab} 
+        path="/manage-post"
+        tabButtons={['Post Form', 'Created Post', 'Published Post', 'Archived Post']}
+      />
 
       {/* Content Section */}
       <div className={styles.content}>

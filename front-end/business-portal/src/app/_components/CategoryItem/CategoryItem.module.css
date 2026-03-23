@@ -1,0 +1,16 @@
+.categoryItem {
+  color: var(--soft-white);
+  border-radius: 1rem;
+  border: 1px solid hsla(150, 60%, 54%, 0.08);
+  background: hsla(220, 25%, 16%, 0.6);
+  backdrop-filter: blur(12px);
+  padding: 0.875rem 1rem;
+  cursor: grab;
+  transition: all 0.25s ease;
+}
+
+.categoryItem:hover {
+  border-color: hsla(150, 60%, 54%, 0.2);
+  background: hsla(220, 25%, 18%, 0.7);
+  box-shadow: 0 4px 20px hsla(150, 60%, 54%, 0.06);
+}
