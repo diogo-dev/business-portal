@@ -18,6 +18,10 @@ export class Event {
   @Column()
   title: string;
 
+  @Index({ unique: true })
+  @Column({unique: true})
+  slug: string;
+
   @Column({ length: 500 })
   summary: string;
 

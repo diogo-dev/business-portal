@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import styles from './PostGrid.module.css';
 import { PostCard } from '../PostCard/PostCard';
-import { patch, del } from '@/app/api';
+import { patch } from '@/app/api';
 import { toast } from 'sonner';
 import { EditPostModal } from '../EditPostModal/EditPostModal';
-import { DeletePostModal } from '../DeletePostModal/DeletePostModal';
+import { DeleteModal } from '../DeletePostModal/DeleteModal';
 import Pagination from '@mui/material/Pagination';
 import { Post } from '../../_types/post.types';
 import { MetaData } from '../../_types/metadata.type';
@@ -70,11 +70,9 @@ export function PostGrid({
         setIsLoading?.(false);
         return;
       }
-      if (response.ok) {
-        setSelectedPostId(null);
-      }
 
       // Success
+      setSelectedPostId(null);
       setIsLoading?.(false);
       setIsSuccess?.(true);
       toast.success(`Post ${status} successfully!`);
@@ -210,8 +208,6 @@ export function PostGrid({
         </div>
       </div>
 
-      
-
       {showEditModal && selectedPostId && (
         <EditPostModal 
           post={posts.find(post => post.id === selectedPostId)!}
@@ -223,8 +219,9 @@ export function PostGrid({
       )}
         
       {showDeleteModal && selectedPostId && (
-        <DeletePostModal 
-          postId={selectedPostId}
+        <DeleteModal 
+          resourceId={selectedPostId}
+          resourceType="post"
           onClose={() => setShowDeleteModal(false)}
           onSuccess={() => {
             fetchPosts?.();

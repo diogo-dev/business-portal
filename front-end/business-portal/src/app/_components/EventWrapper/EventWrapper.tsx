@@ -1,8 +1,8 @@
-import { toast } from 'sonner';
 import styles from './EventWrapper.module.css';
 import { get } from '../../api';
-import EventForm  from '@/app/_components/EventForm/EventFrom';
+import EventForm  from '@/app/_components/EventForm/EventForm';
 import EventClient from '@/app/_components/EventClient/EventClient';
+import { toast } from 'sonner';
 
 interface EventWrapperProps {
   activeTab: 'form' | 'draft' | 'published' | 'archived';

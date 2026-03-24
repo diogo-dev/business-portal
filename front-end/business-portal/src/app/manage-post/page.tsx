@@ -20,7 +20,7 @@ export default async function ManagePost({ searchParams }: { searchParams: Promi
       {/* Header Section */}
       <div className={styles.header}>
         <div className={styles.titleContainer}>
-          <h1 className={styles.mainTitle}>Create Post Publication</h1>
+          <h1 className={styles.mainTitle}>Manage Post Publication</h1>
           <PostMenu />
         </div>
         <p className={styles.subtitle}>

@@ -48,19 +48,19 @@ export class EventController {
   }
 
   @Public()
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: UUID) {
-    return this.eventService.findOne(id);
-  }
-
-  @Public()
   @Get('status')
-  findByStatus(@Query('status') query: PaginationDto) {
+  findByStatus(@Query() query: PaginationDto) {
     const {page = 1, limit = 6, status} = query;
 
     const validStatus = status ? (status as PostStatus) : PostStatus.PUBLISHED;
 
     return this.eventService.findPaginatedEventsByStatus(page, limit, validStatus);
+  }
+
+  @Public()
+  @Get(':id')
+  findOne(@Param('id', ParseUUIDPipe) id: UUID) {
+    return this.eventService.findOne(id);
   }
 
   @Patch(':id')

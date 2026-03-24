@@ -45,9 +45,7 @@ export default function PostForm() {
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        toast.error(errorData.message || 'Error creating post');
-        setIsLoading(false);
-        return;
+        throw new Error(errorData.message);
       }
       
       // Success!

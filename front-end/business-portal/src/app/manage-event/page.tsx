@@ -4,14 +4,14 @@ import styles from './page.module.css';
 import EventWrapper from '../_components/EventWrapper/EventWrapper';
 
 interface EventSearchParams {
-  tabs?: 'form' | 'draft' | 'published' | 'archived';
+  tab?: 'form' | 'draft' | 'published' | 'archived';
   page?: string;
 }
 
 export default async function ManageEvent({ searchParams }: { searchParams: Promise<EventSearchParams> }) {
 
   const params = await searchParams;
-  const activeTab = params.tabs || 'form';
+  const activeTab = params.tab || 'form';
   const page = parseInt(params.page || '1');
 
   return (
@@ -31,7 +31,7 @@ export default async function ManageEvent({ searchParams }: { searchParams: Prom
       />
 
       {/* Content Section */}
-      <div>
+      <div className={styles.content}>
         <Suspense fallback={<LoadingState />}>
           <EventWrapper 
             activeTab={activeTab} 

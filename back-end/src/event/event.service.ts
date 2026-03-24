@@ -18,7 +18,9 @@ export class EventService {
   async create(dto: CreateEventDto, creatorId: string): Promise<Event> {
     const creator = await this.userAccountService.findOne(creatorId);
 
-    const event = this.eventRepository.create({ ...dto, creator: creator });
+    const slug = this.generateSlug(dto.title);
+
+    const event = this.eventRepository.create({ ...dto, slug: slug, creator: creator });
     return await this.eventRepository.save(event);
   }
 
@@ -116,5 +118,11 @@ export class EventService {
       .execute();
       
     return await this.findOne(id);
+  }
+
+  private generateSlug(title: string): string {
+    return title.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
+      .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
   }
 }

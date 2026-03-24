@@ -4,6 +4,7 @@ import { MetaData } from "../../_types/metadata.type";
 import { Event } from "../../_types/event.types";
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import EventGrid from "../EventGrid/EventGrid";
 
 interface EventClientProps {
   events: Event[];
@@ -32,8 +33,17 @@ export default function EventClient({
   }
 
   return (
-    <>
-    </>
+    <EventGrid 
+      events={events}
+      metaData={metaData}
+      eventStatus={eventStatus}
+      isLoading={isLoading}
+      isSuccess={isSuccess}
+      setIsLoading={setIsLoading}
+      setIsSuccess={setIsSuccess}
+      fetchEvents={handleRefresh}
+      onPageChange={handlePageChange}
+    />
   );
 
 }

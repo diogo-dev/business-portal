@@ -4,7 +4,6 @@ import styles from './Tabs.module.css';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 
-
 interface TabsProps {
   activeTab: 'form' | 'draft' | 'published' | 'archived';
   path: string;

@@ -19,7 +19,7 @@ export function Header() {
   const dropdownItems = {
     event: [
       { label: 'Events', href: '/events' },
-      { label: 'Manage Events', href: '/manage-events' }
+      { label: 'Manage Events', href: '/manage-event' }
     ],
     blog: [
       { label: 'Blog', href: '/blog' },

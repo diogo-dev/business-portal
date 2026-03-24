@@ -236,10 +236,6 @@
   display: none;
 }
 
-.inputSection {
-  width: 100%;
-}
-
 .buttonContainer {
   display: flex;
   gap: 12px;

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { InputCard } from '../InputCard/InputCard';
 import { UploadCard } from '../UploadCard/UploadCard';
-import styles from './PostForm.module.css';
+import styles from './EventForm.module.css';
 import { TextareaCard } from '../TextareaCard/TextareaCard';
 import { postFormData } from '@/app/api';
 import { toast } from 'sonner';
@@ -47,24 +47,22 @@ export default function EventForm() {
 
       const token = localStorage.getItem('token');
       if (!token) {
-        toast.error('You must be logged in to create a post');
+        toast.error('You must be logged in to create an event');
         setIsLoading(false);
         return;
       }
 
-      const response = await postFormData('/post', formData, token);
+      const response = await postFormData('/event', formData, token);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        toast.error(errorData.message || 'Error creating post');
-        setIsLoading(false);
-        return;
+        throw new Error(errorData.message);
       }
       
       // Success!
       setIsLoading(false);
       setIsSuccess(true);
-      toast.success('Post created successfully!');
+      toast.success('Event created successfully!');
       
       // Clear form fields
       setTitle('');
@@ -78,7 +76,7 @@ export default function EventForm() {
       // After 2 seconds, navigate to drafts and refresh server data
       setTimeout(() => {
         setIsSuccess(false);
-        router.push('/manage-events?tab=draft');
+        router.push('/manage-event?tab=draft');
         router.refresh();
       }, 2000);
       
@@ -133,7 +131,7 @@ export default function EventForm() {
       )}
 
       <div className={styles.content}>
-        <div className={styles.section}>
+        <div className={styles.uploadSection}>
           <UploadCard onFileChange={setImageFile} />
         </div>
 
