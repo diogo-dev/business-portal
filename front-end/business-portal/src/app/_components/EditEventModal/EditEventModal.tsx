@@ -58,13 +58,6 @@ export function EditEventModal({ event, onSuccess, onClose }: EditEventModalProp
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast.error('You must be logged in to edit an event');
-        setIsLoading(false);
-        return;
-      }
-
       const formData = new FormData();
       formData.append('title', title);
       formData.append('summary', summary);
@@ -82,7 +75,7 @@ export function EditEventModal({ event, onSuccess, onClose }: EditEventModalProp
 
       // Validate start and end times
 
-      const response = await patchFormData(`/event/${event.id}`, formData, token);
+      const response = await patchFormData(`/event/${event.id}`, formData);
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message);
@@ -91,8 +84,9 @@ export function EditEventModal({ event, onSuccess, onClose }: EditEventModalProp
       setIsLoading(false);
       setIsSuccess(true);
       toast.success('Event updated successfully!');
-    } catch (error: any) {
-      toast.error(error.message || 'An unexpected error occurred while updating the event');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred while updating the event';
+      toast.error(message);
       setIsLoading(false);
     }
   }

@@ -1,8 +1,8 @@
 import styles from './EventWrapper.module.css';
-import { get } from '../../api';
+import { get, getServer } from '../../api';
 import EventForm  from '@/app/_components/EventForm/EventForm';
 import EventClient from '@/app/_components/EventClient/EventClient';
-import { toast } from 'sonner';
+import { cookies } from 'next/headers';
 
 interface EventWrapperProps {
   activeTab: 'form' | 'draft' | 'published' | 'archived';
@@ -11,15 +11,18 @@ interface EventWrapperProps {
 
 async function fetchEvents(page: number, status: string, limit: number = 6) {
   try {
-    const response = await get(`/event/status?page=${page}&limit=${limit}&status=${status}`);
+    const cookieStore = await cookies();
+    const response = await getServer(`/event/status?page=${page}&limit=${limit}&status=${status}`, cookieStore.toString());
 
     if (!response.ok) {
       throw new Error(`Failed to fetch events: ${response.statusText}`);
     }
 
     return await response.json();
-  } catch (err: any) {
-    toast.error(err.message || 'Failed to fetch events');
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to fetch events';
+    console.error('Failed to fetch events:', message);
+    return { events: [], meta: null };
   }
 }
 

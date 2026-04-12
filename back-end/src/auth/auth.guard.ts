@@ -9,7 +9,6 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from 'src/decorators/public.decorator';
 
-
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -37,13 +36,18 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token);
       request['user'] = payload;
 
-    } catch {
+    } catch (err: any) {
+      console.error('JWT verification failed:', err.message);
       throw new UnauthorizedException();
     }
     return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
+    if (request.cookies?.access_token) {
+      return request.cookies.access_token;
+    }
+
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }

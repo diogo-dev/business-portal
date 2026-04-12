@@ -33,15 +33,8 @@ export default function PostForm() {
       if (imageFile) {
         formData.append('file', imageFile);
       }
-
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast.error('You must be logged in to create a post');
-        setIsLoading(false);
-        return;
-      }
-
-      const response = await postFormData('/post', formData, token);
+      
+      const response = await postFormData('/post', formData);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -66,9 +59,10 @@ export default function PostForm() {
         router.refresh();
       }, 2000);
       
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
       console.error('Error submitting post:', error);
-      toast.error(error.message || 'An unexpected error occurred');
+      toast.error(message);
       setIsLoading(false);
     }
   }

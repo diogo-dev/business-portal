@@ -1,6 +1,5 @@
 import { Suspense } from 'react';
 import { PublicPostGridWrapper } from '../_components/PublicPostGridWrapper/PublicPostGridWrapper';
-import SearchBar  from '../_components/SearchBar/SearchBar';
 import styles from './page.module.css';
 
 type PublicPostSearchParams = {
@@ -14,25 +13,28 @@ export default async function Blog({ searchParams }: { searchParams: Promise<Pub
   const limit = parseInt(params.limit || '9');
 
    return (
-    <div className={styles.container}>
-      <div className={styles.filtersContainer}>
-        {/* Filter options with categories */}
-      </div>
+    <div className={styles.pageContainer}>
+      
+      <h1 className={styles.pageTitle}>Blog Section</h1>
 
-      <div className={styles.contentContainer}>
-        <div>
-          {/* <SearchBar /> */}
+      <div className={styles.container}>
+
+        <div className={styles.filtersContainer}>
+          {/* Filter options with categories */}
         </div>
-        <div>
-          <Suspense fallback={<LoadingState />}>
-            <PublicPostGridWrapper 
-              page={page}
-              limit={limit}
-            />
-          </Suspense>
+
+        <div className={styles.contentContainer}>
+          <div>
+            <Suspense fallback={<LoadingState />}>
+              <PublicPostGridWrapper 
+                page={page}
+                limit={limit}
+              />
+            </Suspense>
+          </div>
         </div>
       </div>
-    </div>
+     </div>
    );
 }
 

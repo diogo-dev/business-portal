@@ -31,8 +31,7 @@ export default function EventGrid({
   isSuccess,
   setIsLoading,
   setIsSuccess,
-  fetchEvents,
-  onPageChange
+  fetchEvents
 }: EventGridProps) {
 
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
@@ -55,14 +54,7 @@ export default function EventGrid({
     setIsSuccess?.(false);
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast.error(`You must be logged in to ${status} a post`);
-        setIsLoading?.(false);
-        return;
-      };
-
-      const response = await patch(`event/${eventId}/${status}`, undefined, token);
+      const response = await patch(`event/${eventId}/${status}`, undefined);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -82,8 +74,9 @@ export default function EventGrid({
         fetchEvents?.();
       }, 2000);
 
-    } catch (error: any) {
-      toast.error(error.message || 'An unexpected error occurred');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      toast.error(message);
       setIsLoading?.(false);
     } 
   }
@@ -176,8 +169,8 @@ export default function EventGrid({
                 isSelected={selectedEventId === event.id}
                 isPublic={false}
                 onClick={(e) => handleEventClick(event, e)}
-                onDelete={(e) => setShowDeleteModal(true)}
-                onUpdate={(e) => setShowEditModal(true)}
+                onDelete={() => setShowDeleteModal(true)}
+                onUpdate={() => setShowEditModal(true)}
                 onHandlePublishOrArchive={(e, status) => handlePublishOrArchive(event.id, status, e)}
               />
             ))

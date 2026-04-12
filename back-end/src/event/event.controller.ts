@@ -47,8 +47,8 @@ export class EventController {
     return this.eventService.findAll();
   }
 
-  @Public()
   @Get('status')
+  @Roles('admin')
   findByStatus(@Query() query: PaginationDto) {
     const {page = 1, limit = 6, status} = query;
 

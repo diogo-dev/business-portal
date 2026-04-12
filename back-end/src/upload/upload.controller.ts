@@ -2,10 +2,7 @@ import {
     BadRequestException,
     Body, 
     Controller, 
-    Delete, 
-    FileTypeValidator, 
-    MaxFileSizeValidator, 
-    ParseFilePipe, 
+    Delete,
     Post, 
     UploadedFile, 
     UseInterceptors 

@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Typography, Box, Divider } from '@mui/material';
+import { Avatar, Typography, Box } from '@mui/material';
 import { Comment } from '@/app/_types/comment.types';
 
 interface DisplayCommentsProps {
@@ -13,30 +13,34 @@ export function DisplayComments({ comments }: DisplayCommentsProps) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, marginLeft: '8px' }}>
-      {comments.map((comment) => (
-        <Box key={comment.id} sx={{ display: 'flex', gap: 2 }}>
-          <Avatar 
-            src={comment.author?.profile?.avatarUrl} 
-            sx={{bgcolor: 'var(--soft-white)', color: 'primary.dark', width: 30, height: 30}}
-          >
-            {comment.author?.userName?.charAt(0).toUpperCase() || 'U'}
-          </Avatar>
-          
-          <Box sx={{ flex: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mb: 0.5 }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'primary.light' }}>
-                {comment.author?.userName}
-              </Typography>
-              <Typography variant="caption" color="primary.light">
-                {new Date(comment.createdAt).toLocaleDateString()}
+      {comments.map((comment) => {
+        const avatarSrc = comment.author?.profile?.avatarUrl?.trim() || undefined;
+
+        return (
+          <Box key={comment.id} sx={{ display: 'flex', gap: 2 }}>
+            <Avatar 
+              src={avatarSrc}
+              sx={{bgcolor: 'var(--soft-white)', color: 'primary.dark', width: 30, height: 30}}
+            >
+              {comment.author?.userName?.charAt(0).toUpperCase() || 'U'}
+            </Avatar>
+            
+            <Box sx={{ flex: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mb: 0.5 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'primary.light' }}>
+                  {comment.author?.userName}
+                </Typography>
+                <Typography variant="caption" color="primary.light">
+                  {new Date(comment.createdAt).toLocaleDateString()}
+                </Typography>
+              </Box>
+              <Typography variant="body2" sx={{ color: 'primary.main', lineHeight: 1.6 }}>
+                {comment.content}
               </Typography>
             </Box>
-            <Typography variant="body2" sx={{ color: 'primary.main', lineHeight: 1.6 }}>
-              {comment.content}
-            </Typography>
           </Box>
-        </Box>
-      ))}
+        );
+      })}
     </Box>
   );
 }

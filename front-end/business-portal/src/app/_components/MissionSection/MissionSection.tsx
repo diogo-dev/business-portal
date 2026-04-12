@@ -58,7 +58,7 @@ const items: Item[] = [
   },
 ]; 
 
-export function MissionSection() {
+export default function MissionSection() {
 
   return (
     <section className={styles.section}>

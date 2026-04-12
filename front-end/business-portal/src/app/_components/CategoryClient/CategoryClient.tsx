@@ -9,8 +9,6 @@ import DeleteDropZone from "../DeleteDropZone/DeleteDropZone";
 import { toast } from "sonner";
 import { del } from "@/app/api";
 import { useRouter } from 'next/navigation';
-import CircularProgress from '@mui/material/CircularProgress';
-
 
 interface CategoryClientProps {
   categories: Category[];
@@ -31,21 +29,17 @@ export default function CategoryClient({ categories }: CategoryClientProps) {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('User is not authenticated');
-      }
-
       const [res] = await Promise.all([
-        del(`/category/${dragging.id}`, token),
+        del(`/category/${dragging.id}`),
         delay(1000)
       ]);
       if (!res.ok) throw new Error("Failed to delete category");
 
       router.refresh();
       toast.success(`"${dragging.name}" deleted`);
-    } catch (err: any) {
-      toast.error(err.message || "Failed to delete category");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to delete category";
+      toast.error(message);
     } finally {
       setDragging(null);
       setIsLoading(false);

@@ -45,14 +45,7 @@ export default function EventForm() {
 
       // Validate start and end times
 
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast.error('You must be logged in to create an event');
-        setIsLoading(false);
-        return;
-      }
-
-      const response = await postFormData('/event', formData, token);
+      const response = await postFormData('/event', formData);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -80,8 +73,9 @@ export default function EventForm() {
         router.refresh();
       }, 2000);
       
-    } catch (error: any) {
-      toast.error(error.message || 'An unexpected error occurred');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      toast.error(message);
       setIsLoading(false);
     }
   }

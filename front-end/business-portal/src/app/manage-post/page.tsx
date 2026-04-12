@@ -36,7 +36,7 @@ export default async function ManagePost({ searchParams }: { searchParams: Promi
       />
 
       {/* Content Section */}
-      <div className={styles.content}>
+      <div>
         <Suspense fallback={<LoadingState />}>
           <PostGridWrapper 
             activeTab={activeTab}

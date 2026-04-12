@@ -25,8 +25,9 @@ export default function Register() {
       await register(data.name, data.email, data.phone, data.password);
       toast.success("Account created successfully!", {duration: 2000});
       setTimeout(() => router.push('/'), 1000);
-    } catch (error: any) {
-      toast.error(error.message || "Error registering", {duration: 2000});
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Error registering";
+      toast.error(message, {duration: 2000});
     } finally {
       setLoading(false);
     }

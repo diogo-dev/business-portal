@@ -17,12 +17,22 @@ import { PermissionModule } from './permission/permission.module';
 import { AuthGuard } from './auth/auth.guard';
 import { UploadModule } from './upload/upload.module';
 import { CategoryModule } from './category/category.module';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env'
+      validationSchema: Joi.object({
+        PORT: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRES_IN: Joi.string().required(),
+        AWS_ACCESS_KEY_ID: Joi.string().required(),
+        AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+        AWS_REGION: Joi.string().required(),
+        AWS_S3_BUCKET_NAME: Joi.string().required(),
+        AWS_S3_URL: Joi.string().required(),
+      })
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UserAccountModule,

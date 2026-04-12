@@ -14,7 +14,6 @@ interface UploadCardProps {
 }
 
 export function UploadCard({ onFileChange }: UploadCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -90,8 +89,6 @@ export function UploadCard({ onFileChange }: UploadCardProps) {
   return (
     <div
       className={`${styles.uploadCard} ${isDragging ? styles.dragging : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}

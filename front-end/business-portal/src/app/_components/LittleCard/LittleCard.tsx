@@ -23,13 +23,8 @@ export default function LittleCard({ label }: LittleCardProps) {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('User is not authenticated');
-      }
-
       const [res] = await Promise.all([
-        post('/category', { name: inputValue }, token),
+        post('/category', { name: inputValue }),
         delay(1000) 
       ]);
       if (!res.ok) {
@@ -38,8 +33,9 @@ export default function LittleCard({ label }: LittleCardProps) {
 
       router.refresh();
       toast.success('Category created successfully!');
-    } catch (err: any) {
-      toast.error(err.message || 'An error occurred');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'An error occurred';
+      toast.error(message);
     } finally {
       setIsLoading(false);
       setInputValue('');

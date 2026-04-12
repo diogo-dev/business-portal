@@ -1,83 +1,57 @@
-export function get(route: string, token?: string | null) {
-  const headers: Record<string, string> = {};
-
-  if(token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
-
-  return fetch(urlOf(route), { headers });
+export function get(route: string) {
+  return fetch(urlOf(route), { credentials: 'include' });
 }
 
-export function post(route: string, body?: any, token?: string | null) {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
+export function getServer(route: string, cookieHeader?: string) {
+  return fetch(urlOf(route), {
+    headers: cookieHeader ? { cookie: cookieHeader } : undefined,
+    cache: 'no-store',
+  });
+}
 
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
+export function post(route: string, body?: unknown) {
 
   return fetch(urlOf(route), {
     method: "POST",
-    headers,
+    headers: { "Content-Type": "application/json" },
+    credentials: 'include',
     body: JSON.stringify(body),
   });
 }
 
-export function postFormData(route: string, formData: FormData, token?: string | null) {
-  const headers: Record<string, string> = {};
-
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
+export function postFormData(route: string, formData: FormData) {
 
   return fetch(urlOf(route), {
     method: "POST",
-    headers,
+    credentials: 'include',
     body: formData,
   });
 }
 
-export function patch(route: string, body?: any, token?: string | null) {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
+export function patch(route: string, body?: unknown) {
 
   return fetch(urlOf(route), {
     method: "PATCH",
-    headers,
+    headers: { "Content-Type": "application/json"},
+    credentials: 'include',
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
   });
 }
 
-export function patchFormData(route: string, formData: FormData, token?: string | null) {
-  const headers: Record<string, string> = {};
-
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
+export function patchFormData(route: string, formData: FormData) {
 
   return fetch(urlOf(route), {
     method: "PATCH",
-    headers,
+    credentials: 'include',
     body: formData,
   });
 }
 
-export function del(route: string, token?: string | null) {
-  const headers: Record<string, string> = {};
-
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
+export function del(route: string) {
 
   return fetch(urlOf(route), {
     method: "DELETE",
-    headers,
+    credentials: 'include',
   });
 }
 

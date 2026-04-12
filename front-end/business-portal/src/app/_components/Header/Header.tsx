@@ -14,7 +14,7 @@ export function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user, isAuthenticated, logout } = useAuth();
-  const isAdmin = user?.roles?.some((role : any) => role.name === 'admin');
+  const isAdmin = user?.roles?.some((role) => role.name === 'admin');
 
   const dropdownItems = {
     event: [

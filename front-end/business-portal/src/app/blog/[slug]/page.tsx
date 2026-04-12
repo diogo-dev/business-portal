@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import { get } from '@/app/api';
@@ -17,7 +18,7 @@ async function getPost(slug: string): Promise<Post | null> {
     const response = await get(`post/slug/${slug}`);
     if (!response.ok) return null;
     return await response.json();
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -41,7 +42,7 @@ export default async function PostPage({ params }: PageProps) {
   }
 
   const authorName = post.author?.userName || 'Anonymous';
-  const authorAvatar = post.author?.profile?.avatarUrl;
+  const authorAvatar = post.author?.profile?.avatarUrl?.trim() || undefined;
   const publishDate = formatDate(post.publishedAt || post.createdAt);
 
   return (
@@ -77,10 +78,14 @@ export default async function PostPage({ params }: PageProps) {
         {/* Cover Image */}
         {post.coverImageUrl && (
           <div className={styles.coverImageContainer}>
-            <img 
-              src={post.coverImageUrl} 
+            <Image
+              src={post.coverImageUrl}
               alt={post.title}
               className={styles.coverImage}
+              width={1200}
+              height={675}
+              unoptimized
+              sizes="(max-width: 768px) 100vw, 740px"
             />
           </div>
         )}

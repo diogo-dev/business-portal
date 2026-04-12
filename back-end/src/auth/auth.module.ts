@@ -14,10 +14,12 @@ import { UploadModule } from 'src/upload/upload.module';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         global: true,
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: config.get<StringValue>('JWT_EXPIRES_IN', '1h') }
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { 
+          expiresIn: `${configService.get('JWT_EXPIRES_IN')}s`
+         }
       })
     })
   ],

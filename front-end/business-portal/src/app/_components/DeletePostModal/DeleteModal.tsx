@@ -49,12 +49,7 @@ export function DeleteModal({
     setIsLoading(true);
 
      try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('User is not authenticated');
-      }
-
-      const response = await del(`/${RESOURCE_CONFIG[resourceType].endpoint}/${resourceId}`, token);
+      const response = await del(`/${RESOURCE_CONFIG[resourceType].endpoint}/${resourceId}`);
 
       if (!response.ok) {
         throw new Error(`Failed to delete ${RESOURCE_CONFIG[resourceType].label}`);
@@ -66,8 +61,9 @@ export function DeleteModal({
       toast.success(`${RESOURCE_CONFIG[resourceType].label} deleted successfully!`);
       
 
-    } catch (error: any) {
-      toast.error(error.message || 'An unexpected error occurred');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      toast.error(message);
       setIsLoading(false);
       setIsSuccess(false);
     }

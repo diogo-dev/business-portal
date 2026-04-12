@@ -48,9 +48,8 @@ export class PostController {
     return this.postService.findPaginatedPosts(page, limit);
   }
 
-  @Public()
   @Get('status')
-  //@Roles('admin')
+  @Roles('admin')
   getPostsByStatus(@Query() query: PaginationDto) {
     const {page = 1, limit = 9, status} = query;
 

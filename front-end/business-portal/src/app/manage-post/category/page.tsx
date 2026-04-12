@@ -1,5 +1,3 @@
-import LittleCard from '@/app/_components/LittleCard/LittleCard';
-import SearchBar from '@/app/_components/SearchBar/SearchBar';
 import CategoryWrapper from '@/app/_components/CategoryWrapper/CategoryWrapper';
 import styles from './page.module.css';
 import { Suspense } from 'react';

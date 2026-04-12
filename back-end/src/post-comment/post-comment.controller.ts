@@ -11,7 +11,6 @@ export class PostCommentController {
   constructor(private readonly postCommentService: PostCommentService) {}
 
   @Post()
-  @Roles('admin', 'user')
   create(@Body() createPostCommentDto: CreatePostCommentDto, @Request() req) {
     return this.postCommentService.create(createPostCommentDto, req.user.sub);
   }

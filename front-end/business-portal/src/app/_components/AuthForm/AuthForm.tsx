@@ -67,17 +67,13 @@ export function AuthForm({
   }
 
   function handleFormSubmit(e: React.FormEvent) {
-    console.log('AuthForm handleFormSubmit called');
-    console.log('Form data:', formData);
     e.preventDefault();
     const processedData = { ...formData };
     
     if (processedData.phone) {
       processedData.phone = removePhoneMask(processedData.phone);
     }
-
-    console.log('Processed data:', processedData);
-    console.log('Calling onSubmit prop');
+    
     onSubmit(processedData);
   }
 

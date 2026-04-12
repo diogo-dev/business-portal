@@ -64,10 +64,7 @@ const Profile = () => {
       const fetchProfile = async () => {
         // fetch the logged user profile info and populate the states
         try {
-          const token = localStorage.getItem("token");
-          if (!token) throw new Error("No auth token found");
-
-          const res = await get('/auth/me', token);
+          const res = await get('/auth/me');
           if (!res.ok) throw new Error("Failed to fetch profile data");
           const data = await res.json();
 
@@ -80,7 +77,7 @@ const Profile = () => {
           );
           setAvatarUrl(data.profile.avatarUrl || "");
           setSocialLinks(data.profile.socialLinks || { facebook: "", instagram: "", twitter: "" });
-        } catch (error) {
+        } catch {
           toast.error("Failed to load profile information.");
         } 
       };
@@ -145,7 +142,7 @@ const Profile = () => {
     }
 
     // Build profile object 
-    const profileData: Record<string, any> = {};
+    const profileData: Record<string, unknown> = {};
     
     // Add personal fields with type conversion
     personalFields.forEach((f) => {
@@ -180,13 +177,8 @@ const Profile = () => {
     try {
       setLoading(true);
 
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No auth token found");
-      }
-
       const [res] = await Promise.all([
-        patchFormData('/auth/me', formData, token),
+        patchFormData('/auth/me', formData),
         delay(1000)
       ])
 

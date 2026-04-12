@@ -24,21 +24,15 @@ export function InputComment(props: InputCommentProps) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const { isAuthenticated, user } = useAuth();
   const router = useRouter();
+  const avatarSrc = user?.profile?.avatarUrl?.trim() || undefined;
 
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const handleSubmit = async () => {
     
     try {
-      setIsLoading(true);
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast.error('You must be logged in to create a post');
-        return;
-      }
-
       const [response] = await Promise.all([
-        post('/post-comment', { content: comment, postId: props.postId }, token),
+        post('/post-comment', { content: comment, postId: props.postId }),
         delay(1000) 
       ])
 
@@ -54,7 +48,7 @@ export function InputComment(props: InputCommentProps) {
       if (props.onCommentAdd) props.onCommentAdd(); 
       
       //refresh the comments list
-      } catch (error) {
+      } catch {
         toast.error('An error occurred while creating the comment');
       } finally {
         setIsLoading(false);
@@ -79,7 +73,7 @@ export function InputComment(props: InputCommentProps) {
       <div className={styles.inputSection}>
         <Avatar
           sx={{bgcolor: 'var(--soft-white)', color: 'primary.dark'}}
-          src={user?.profile?.avatarUrl} 
+          src={avatarSrc}
           alt={user?.userName || 'User Avatar'}
           className={styles.avatar}
         >

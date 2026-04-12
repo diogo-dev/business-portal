@@ -1,8 +1,7 @@
 "use client";
-import { Children, useState } from 'react';
+import { useState } from 'react';
 import { InputComment } from '../InputComment/InputComment';
 import styles from './CommentSection.module.css';
-import { DisplayCommentsWrapper } from '../DisplayCommentsWrapper/DisplayCommentsWrapper';
 
 interface CommentSectionProps {
   initialCount: number;

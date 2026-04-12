@@ -55,14 +55,7 @@ export function PostGrid({
     setIsSuccess?.(false);
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast.error(`You must be logged in to ${status} a post`);
-        setIsLoading?.(false);
-        return;
-      };
-
-      const response = await patch(`/post/${postId}/${status}`, undefined, token);
+      const response = await patch(`/post/${postId}/${status}`, undefined);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -82,8 +75,9 @@ export function PostGrid({
         fetchPosts?.();
       }, 2000);
 
-    } catch (error: any) {
-      toast.error(error.message || 'An unexpected error occurred');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      toast.error(message);
       setIsLoading?.(false);
     }
 
@@ -181,8 +175,8 @@ export function PostGrid({
                 isSelected={selectedPostId === post.id}
                 isForBlog={false}
                 onClick={(e) => handlePostClick(post, e)}
-                onDelete={(e) => setShowDeleteModal(true)}
-                onUpdate={(e) => setShowEditModal(true)}
+                onDelete={() => setShowDeleteModal(true)}
+                onUpdate={() => setShowEditModal(true)}
                 onHandlePublishOrArchive={(e, status) => handlePublishOrArchive(post.id, status, e)}
               />
             ))
@@ -194,15 +188,32 @@ export function PostGrid({
             <Pagination
               count={metaData.totalPages}
               page={metaData.currentPage}
-              onChange={(event, page) => onPageChange?.(page)}
+              onChange={(event, page) => {
+                void event;
+                onPageChange?.(page);
+              }}
               shape='rounded'
               size='medium'
               sx={{
                 '& .MuiPaginationItem-root': {
                   color: 'success.main',
+
+                  '&:hover': {
+                    backgroundColor: 'primary.light',
+                    color: 'primary.dark',
+                  },
+
+                  '&.Mui-selected': {
+                    backgroundColor: 'primary.dark',
+                    color: 'primary.contrastText',  
+
+                    '&:hover': {
+                      backgroundColor: 'primary.light',
+                      color: 'primary.dark',
+                    }
+                  }
                 }             
              }}
-              color='primary'
             />
           )}
         </div>

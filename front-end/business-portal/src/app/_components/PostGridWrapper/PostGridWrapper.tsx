@@ -1,8 +1,8 @@
 import styles from './PostGridWrapper.module.css';
-import { get } from '../../api';
+import { getServer } from '../../api';
 import PostForm  from '../PostForm/PostForm';
 import PostGridClient  from '../PostGridClient/PostGridClient';
-import { toast } from 'sonner';
+import { cookies } from 'next/headers';
 
 interface PostGridWrapperProps {
   activeTab: 'form' | 'draft' | 'published' | 'archived';
@@ -11,15 +11,21 @@ interface PostGridWrapperProps {
 
 async function fetchPosts(page: number, status: string, limit: number = 9) {
   try {
-    const response = await get(`/post/status?page=${page}&limit=${limit}&status=${status}`);
+    const cookieStore = await cookies();
+    const response = await getServer(
+      `/post/status?page=${page}&limit=${limit}&status=${status}`,
+      cookieStore.toString(),
+    );
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch posts: ${response.statusText}`);
+      throw new Error(response.statusText || `HTTP ${response.status}`);
     }
 
     return await response.json();
-  } catch (err: any) {
-    toast.error(err.message || 'Failed to fetch posts');
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('Failed to fetch posts:', message);
+    return { posts: [], meta: null };
   }
 }
 

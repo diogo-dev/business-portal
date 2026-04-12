@@ -24,9 +24,9 @@ export default function Login() {
       await login(data.email, data.passwordHash);
       toast.success("Login successful!", {duration: 2000});
       setTimeout(() => router.push('/'), 1000);
-    } catch (error: any) {
-      console.error('Login error:', error);
-      toast.error(error.message || "Email or password invalid", {duration: 2000});
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Email or password invalid";
+      toast.error(message, {duration: 2000});
     } finally {
       setLoading(false);
     }

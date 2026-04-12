@@ -3,6 +3,7 @@
 import styles from './EventCard.module.css';
 import { LuCalendar } from "react-icons/lu";
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface EventCardProps {
   imageUrl: string;
@@ -21,6 +22,7 @@ interface EventCardProps {
 
 export default function EventCard(props: EventCardProps) {
   const router = useRouter();
+  const imageSrc = props.imageUrl?.trim();
 
   const handleReadMore = () => {
     router.push(`/events/${props.slug}`);
@@ -32,11 +34,16 @@ export default function EventCard(props: EventCardProps) {
       onClick={props.onClick}
     >
       <div className={styles.imageWrapper}>
-        <img 
-          src={props.imageUrl} 
-          alt={props.title}
-          className={styles.image}
-        />
+        {imageSrc && (
+          <Image
+            src={imageSrc}
+            alt={props.title}
+            className={styles.image}
+            fill
+            unoptimized
+            sizes="144px"
+          />
+        )}
       </div>
 
       <div className={styles.content}>
