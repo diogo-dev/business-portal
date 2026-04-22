@@ -6,6 +6,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { Event } from './entities/event.entity';
 import { UserAccountService } from 'src/user-account/user-account.service';
 import { PostStatus } from 'src/post/enum/post-status.enum';
+import { PostOrder } from 'src/shared';
 
 @Injectable()
 export class EventService {
@@ -46,16 +47,43 @@ export class EventService {
     // return event;
   }
 
-  async findPaginatedEventsByStatus(page: number, limit: number, status: PostStatus) {
+  async findPaginatedEventsByStatus(page: number, limit: number, status: PostStatus, sort: PostOrder) {
     const offset = (page - 1) * limit;
     const orderBy = status === PostStatus.DRAFT ? 'event.createdAt' : 'event.publishedAt';
+    const order = sort === PostOrder.ASC ? 'ASC' : 'DESC';
 
     const [events, total] = await this.eventRepository
       .createQueryBuilder('event')
       .leftJoinAndSelect('event.creator', 'creator')
       .where('event.status = :status', { status })
-      .orderBy(orderBy, 'DESC')
+      .orderBy(orderBy, order)
       .offset(offset)
+      .limit(limit)
+      .getManyAndCount();
+
+    return {
+      events: events, 
+      meta: {
+        totalItems: total, 
+        itemCount: events.length,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(total / limit),
+        currentPage: page
+      }
+    }
+  }
+
+  async findPagiantedEvents(page: number, limit: number, sort: PostOrder) {
+    const offsett = (page - 1) * limit;
+    const orderBy = 'event.startsAt';
+    const order = sort === PostOrder.ASC ? 'ASC' : 'DESC';
+
+    const [events, total] = await this.eventRepository
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.creator', 'creator')
+      .where('event.status = :status', { status: PostStatus.PUBLISHED })
+      .orderBy(orderBy, order)
+      .offset(offsett)
       .limit(limit)
       .getManyAndCount();
 

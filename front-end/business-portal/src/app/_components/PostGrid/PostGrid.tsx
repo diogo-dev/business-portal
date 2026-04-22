@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import styles from './PostGrid.module.css';
 import { PostCard } from '../PostCard/PostCard';
 import { patch } from '@/app/api';
@@ -21,6 +22,7 @@ interface PostGridProps {
   setIsSuccess?: (success: boolean) => void | undefined;
   fetchPosts?: () => void;
   onPageChange?: (page: number) => void;
+  onSortChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export function PostGrid({ 
@@ -32,8 +34,10 @@ export function PostGrid({
   setIsLoading,
   setIsSuccess,
   fetchPosts,
-  onPageChange
+  onPageChange,
+  onSortChange,
 }: PostGridProps) {
+  const searchParams = useSearchParams();
   
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -156,7 +160,18 @@ export function PostGrid({
           <p className={styles.successText}>Post archived successfully!</p>
         </div>
       )}
-      
+
+      <div className={styles.sorting}>
+        <p>Ordenar por: </p>
+        <select
+          onChange={onSortChange}
+          value={searchParams.get('sort') || 'desc'}
+        >
+          <option value="desc">Mais Novos</option>
+          <option value="asc">Mais Antigos</option>
+        </select>
+      </div>
+    
       <div className={styles.container}>
         <div className={styles.postsGrid} onClick={handleGridClick}>
           {posts

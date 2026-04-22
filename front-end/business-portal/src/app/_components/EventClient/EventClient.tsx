@@ -25,7 +25,13 @@ export default function EventClient({
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', newPage.toString());
-    router.push(`/manage-post?${params.toString()}`);
+    router.push(`/manage-event?${params.toString()}`);
+  }
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', e.target.value);
+    router.push(`/manage-event?${params.toString()}`);
   }
 
   const handleRefresh = () => {
@@ -43,6 +49,7 @@ export default function EventClient({
       setIsSuccess={setIsSuccess}
       fetchEvents={handleRefresh}
       onPageChange={handlePageChange}
+      onSortChange={handleSortChange}
     />
   );
 

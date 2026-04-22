@@ -3,6 +3,7 @@
 import styles from './PostCard.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { DEFAULT_IMAGES } from '@/app/constants/defaultImages';
 
 interface PostCardProps {
   imageUrl: string;
@@ -24,7 +25,7 @@ interface PostCardProps {
 export function PostCard(props: PostCardProps) {
 
   const router = useRouter();
-  const imageSrc = props.imageUrl?.trim();
+  const imageSrc = props.imageUrl?.trim() || DEFAULT_IMAGES.POST;
 
   const handleReadMore = () => {
     router.push(`/blog/${props.slug}`);
@@ -36,16 +37,14 @@ export function PostCard(props: PostCardProps) {
       onClick={props.onClick}
     >
       <div className={styles.imageWrapper}>
-        {imageSrc && (
-          <Image
-            src={imageSrc}
-            alt={props.title}
-            className={styles.image}
-            fill
-            unoptimized
-            sizes="144px"
-          />
-        )}
+        <Image
+          src={imageSrc}
+          alt={props.title}
+          className={styles.image}
+          fill
+          unoptimized
+          sizes="144px"
+        />
       </div>
 
       <div className={styles.content}>

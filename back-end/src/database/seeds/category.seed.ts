@@ -66,7 +66,7 @@ export default async function seedCategories(categoryService: CategoryService) {
         try {
             await categoryService.create(categoriesData[i]);
             console.log(`Seed: Created category '${categoriesData[i].name}'`);
-        } catch (error) {
+        } catch (error: any) {
             console.error(`Seed: Failed to create category '${categoriesData[i].name}':`, error.message);
         }
     }

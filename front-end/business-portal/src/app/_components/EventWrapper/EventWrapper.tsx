@@ -7,12 +7,16 @@ import { cookies } from 'next/headers';
 interface EventWrapperProps {
   activeTab: 'form' | 'draft' | 'published' | 'archived';
   page: number;
+  sort: 'asc' | 'desc';
 }
 
-async function fetchEvents(page: number, status: string, limit: number = 6) {
+async function fetchEvents(page: number, status: string, sort: 'asc' | 'desc', limit: number = 6) {
   try {
     const cookieStore = await cookies();
-    const response = await getServer(`/event/status?page=${page}&limit=${limit}&status=${status}`, cookieStore.toString());
+    const response = await getServer(
+      `/event/status?page=${page}&limit=${limit}&status=${status}&sort=${sort}`, 
+      cookieStore.toString()
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch events: ${response.statusText}`);
@@ -26,12 +30,12 @@ async function fetchEvents(page: number, status: string, limit: number = 6) {
   }
 }
 
-export default async function EventWrapper({ activeTab, page }: EventWrapperProps) {
+export default async function EventWrapper({ activeTab, page, sort }: EventWrapperProps) {
   if (activeTab === 'form') {
     return <EventForm />;
   }
 
-  const data = await fetchEvents(page, activeTab);
+  const data = await fetchEvents(page, activeTab, sort);
   const { events, meta } = data;
 
   if (!events || events.length === 0) {

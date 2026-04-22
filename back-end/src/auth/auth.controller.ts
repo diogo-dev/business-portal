@@ -8,6 +8,7 @@ import { UploadService } from 'src/upload/upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
+import type {} from 'multer'
 
 @Controller('auth')
 export class AuthController {

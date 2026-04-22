@@ -1,0 +1,14 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#e5e7eb"/>
+  
+  <!-- Image placeholder icon -->
+  <circle cx="200" cy="100" r="40" fill="#d1d5db"/>
+  <path d="M160 180 L240 180 L240 200 L160 200 Z" fill="#d1d5db"/>
+  <path d="M160 210 L240 210 L240 230 L160 230 Z" fill="#d1d5db"/>
+  
+  <!-- "No Image" text -->
+  <text x="200" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="500" fill="#6b7280" text-anchor="middle">
+    No Image Available
+  </text>
+</svg>

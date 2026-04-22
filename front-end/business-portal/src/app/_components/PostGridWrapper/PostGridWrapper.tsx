@@ -7,13 +7,14 @@ import { cookies } from 'next/headers';
 interface PostGridWrapperProps {
   activeTab: 'form' | 'draft' | 'published' | 'archived';
   page: number;
+  sort: 'asc' | 'desc';
 }
 
-async function fetchPosts(page: number, status: string, limit: number = 9) {
+async function fetchPosts(page: number, status: string, sort: 'asc' | 'desc', limit: number = 9) {
   try {
     const cookieStore = await cookies();
     const response = await getServer(
-      `/post/status?page=${page}&limit=${limit}&status=${status}`,
+      `/post/status?page=${page}&limit=${limit}&status=${status}&sort=${sort}`,
       cookieStore.toString(),
     );
 
@@ -29,12 +30,12 @@ async function fetchPosts(page: number, status: string, limit: number = 9) {
   }
 }
 
-export default async function PostGridWrapper({ activeTab, page }: PostGridWrapperProps) {
+export default async function PostGridWrapper({ activeTab, page, sort }: PostGridWrapperProps) {
   if (activeTab === 'form') {
     return <PostForm />;
   }
 
-  const data = await fetchPosts(page, activeTab);
+  const data = await fetchPosts(page, activeTab, sort);
   const { posts, meta } = data;
 
   if (!posts || posts.length === 0) {

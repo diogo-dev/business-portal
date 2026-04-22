@@ -9,7 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'src/upload/upload.service';
 import { PaginationDto } from 'src/post/dto/pagination.dto';
 import { PostStatus } from 'src/post/enum/post-status.enum';
-
+import { PostOrder } from 'src/shared';
 
 @Controller('event')
 export class EventController {
@@ -43,18 +43,19 @@ export class EventController {
 
   @Public()
   @Get()
-  findAll() {
-    return this.eventService.findAll();
+  findAll(@Query() query: PaginationDto) {
+    const {page = 1, limit = 6, sort = PostOrder.DESC} = query;
+    return this.eventService.findPagiantedEvents(page, limit, sort);
   }
 
   @Get('status')
   @Roles('admin')
   findByStatus(@Query() query: PaginationDto) {
-    const {page = 1, limit = 6, status} = query;
+    const {page = 1, limit = 6, status, sort = PostOrder.DESC} = query;
 
     const validStatus = status ? (status as PostStatus) : PostStatus.PUBLISHED;
 
-    return this.eventService.findPaginatedEventsByStatus(page, limit, validStatus);
+    return this.eventService.findPaginatedEventsByStatus(page, limit, validStatus, sort);
   }
 
   @Public()

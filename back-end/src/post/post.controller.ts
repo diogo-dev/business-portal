@@ -9,6 +9,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'src/upload/upload.service';
 import { PostStatus } from './enum/post-status.enum';
 import { PaginationDto } from './dto/pagination.dto';
+import { PostOrder } from 'src/shared';
+import type {} from 'multer'
 
 @Controller('post')
 export class PostController {
@@ -45,17 +47,19 @@ export class PostController {
   getPublishedPosts(@Query() query: PaginationDto) {
     const page = query.page || 1;
     const limit = query.limit || 9;
-    return this.postService.findPaginatedPosts(page, limit);
+    const sort = query.sort || PostOrder.DESC;
+    const categories = query.categories || [];
+    return this.postService.findPaginatedPosts(page, limit, sort, categories);
   }
 
   @Get('status')
   @Roles('admin')
   getPostsByStatus(@Query() query: PaginationDto) {
-    const {page = 1, limit = 9, status} = query;
+    const {page = 1, limit = 9, status, sort = PostOrder.DESC} = query;
 
     const validStatus = status ? (status as PostStatus) : PostStatus.PUBLISHED;
       
-    return this.postService.findPaginatedPostsByStatus(page, limit, validStatus);
+    return this.postService.findPaginatedPostsByStatus(page, limit, validStatus, sort);
   }
 
   @Public()

@@ -7,6 +7,7 @@ import PostMenu from '../_components/PostMenu/PostMenu';
 export type PostSearchParams = {
   tab?: 'form' | 'draft' | 'published' | 'archived';
   page?: string;
+  sort?: 'asc' | 'desc';
 }
 
 export default async function ManagePost({ searchParams }: { searchParams: Promise<PostSearchParams> }) {
@@ -14,6 +15,7 @@ export default async function ManagePost({ searchParams }: { searchParams: Promi
   const params = await searchParams;
   const activeTab = params.tab || 'form';
   const page = parseInt(params.page || '1');
+  const sort = params.sort || 'desc';
 
   return (
     <div className={styles.container}>
@@ -41,6 +43,7 @@ export default async function ManagePost({ searchParams }: { searchParams: Promi
           <PostGridWrapper 
             activeTab={activeTab}
             page={page}
+            sort={sort}
           />
         </Suspense>
       </div>

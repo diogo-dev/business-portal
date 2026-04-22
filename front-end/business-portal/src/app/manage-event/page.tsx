@@ -6,6 +6,7 @@ import EventWrapper from '../_components/EventWrapper/EventWrapper';
 interface EventSearchParams {
   tab?: 'form' | 'draft' | 'published' | 'archived';
   page?: string;
+  sort?: 'asc' | 'desc';
 }
 
 export default async function ManageEvent({ searchParams }: { searchParams: Promise<EventSearchParams> }) {
@@ -13,6 +14,7 @@ export default async function ManageEvent({ searchParams }: { searchParams: Prom
   const params = await searchParams;
   const activeTab = params.tab || 'form';
   const page = parseInt(params.page || '1');
+  const sort = params.sort || 'desc';
 
   return (
     <div className={styles.container}>
@@ -36,6 +38,7 @@ export default async function ManageEvent({ searchParams }: { searchParams: Prom
           <EventWrapper 
             activeTab={activeTab} 
             page={page} 
+            sort={sort}
           />
         </Suspense>
       </div>

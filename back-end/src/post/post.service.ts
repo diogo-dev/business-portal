@@ -8,6 +8,7 @@ import { PostStatus } from './enum/post-status.enum';
 import { UserAccountService } from 'src/user-account/user-account.service';
 import { CategoryService } from 'src/category/category.service';
 import { Category } from 'src/category/entities/category.entity';
+import { PostOrder } from 'src/shared';
 
 @Injectable()
 export class PostService {
@@ -128,15 +129,16 @@ export class PostService {
     }
   }
 
-  async findPaginatedPostsByStatus(page: number, limit: number, status: PostStatus): Promise<{ posts: Post[]; meta: any }> {
+  async findPaginatedPostsByStatus(page: number, limit: number, status: PostStatus, sort: PostOrder = PostOrder.DESC): Promise<{ posts: Post[]; meta: any }> {
     const offset = (page - 1) * limit;
     const orderBy = status === PostStatus.DRAFT ? 'post.createdAt' : 'post.publishedAt';
+    const order = sort === PostOrder.ASC ? 'ASC' : 'DESC';
 
     const [posts, total] = await this.postRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
       .where('post.status = :status', { status })
-      .orderBy(orderBy, 'DESC')
+      .orderBy(orderBy, order)
       .offset(offset)
       .limit(limit)
       .getManyAndCount();
@@ -153,16 +155,30 @@ export class PostService {
     }
   }
 
-  async findPaginatedPosts(page: number, limit: number): Promise<{ posts: Post[]; meta: any }> {
+  async findPaginatedPosts(
+    page: number, 
+    limit: number, 
+    sort: PostOrder = PostOrder.DESC,
+    categories: string[]
+  ): Promise<{ posts: Post[]; meta: any }> {
     const offset = (page - 1) * limit;
+    const order = sort === PostOrder.ASC ? 'ASC' : 'DESC';
 
-    const [posts, total] = await this.postRepository
+    const qb = await this.postRepository
       .createQueryBuilder('post')
       .where('post.status = :status', { status: PostStatus.PUBLISHED })
-      .orderBy('post.publishedAt', 'DESC')
-      .offset(offset)
-      .limit(limit)
-      .getManyAndCount();
+      .orderBy('post.publishedAt', order)
+      .skip(offset)
+      .take(limit)      
+
+    if (categories && categories.length > 0) {
+      qb.innerJoin('post.categories', 'category')
+        .andWhere('category.slug IN (:...categorySlugs)', { categorySlugs: categories })
+        .groupBy('post.id')
+        .having('COUNT(DISTINCT category.id) = :categoryCount', { categoryCount: categories.length })
+    }
+
+    const [posts, total] = await qb.getManyAndCount();
 
     return {
       posts: posts,

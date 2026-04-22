@@ -24,6 +24,12 @@ export function PublicPostGrid({ posts, metaData }: PublicPostGridProps) {
     router.push(`/blog?${params.toString()}`);
   }
 
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', e.target.value);
+    router.push(`/blog?${params.toString()}`)
+  }
+
   return (
     <div className={styles.container}>
 
@@ -34,9 +40,12 @@ export function PublicPostGrid({ posts, metaData }: PublicPostGridProps) {
 
         <div className={styles.sorting}>
           <p>Ordenar por: </p>
-          <select>
-            <option value="newest">Mais Novos</option>
-            <option value="oldest">Mais Antigos</option>
+          <select
+            onChange={handleSortChange}
+            value={searchParams.get('sort') || 'desc'}
+          >
+            <option value="desc">Mais Novos</option>
+            <option value="asc">Mais Antigos</option>
           </select>
         </div>
       </div>

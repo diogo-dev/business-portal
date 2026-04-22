@@ -1,5 +1,5 @@
 "use client";
-
+import { useSearchParams } from 'next/navigation';
 import styles from './EventGrid.module.css';
 import { Event } from '../../_types/event.types';
 import { MetaData } from '../../_types/metadata.type';
@@ -9,7 +9,6 @@ import { patch } from '@/app/api';
 import EventCard from '../EventCard/EventCard';
 import { DeleteModal } from '../DeletePostModal/DeleteModal';
 import { EditEventModal } from '../EditEventModal/EditEventModal';
-
 
 interface EventGridProps {
   events: Event[];
@@ -21,6 +20,7 @@ interface EventGridProps {
   setIsSuccess?: (success: boolean) => void | undefined;
   fetchEvents?: () => void;
   onPageChange?: (page: number) => void;
+  onSortChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export default function EventGrid({
@@ -31,8 +31,10 @@ export default function EventGrid({
   isSuccess,
   setIsLoading,
   setIsSuccess,
-  fetchEvents
+  fetchEvents,
+  onSortChange
 }: EventGridProps) {
+  const searchParams = useSearchParams();
 
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -152,6 +154,17 @@ export default function EventGrid({
           <p className={styles.successText}>Event archived successfully!</p>
         </div>
       )}
+
+      <div className={styles.sorting}>
+        <p>Ordenar por: </p>
+        <select
+          onChange={onSortChange}
+          value={searchParams.get('sort') || 'desc'}
+        >
+          <option value="desc">Mais Novos</option>
+          <option value="asc">Mais Antigos</option>
+        </select>
+      </div>
 
       <div className={styles.container}>
         <div className={styles.eventsGrid} onClick={handleGridClick}>

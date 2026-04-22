@@ -11,6 +11,25 @@ services:
       - "${DB_PORT}:${LOCAL_DB_PORT}"
     volumes:
       - db_data:/var/lib/postgresql/data
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: ./multi.Dockerfile
+  #     target: builder
+  #   container_name: business-portal-backend
+  #   restart: unless-stopped
+  #   command: npm run start:dev
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "${PORT}:${PORT}"
+  #   depends_on:
+  #     - database
+  #   volumes:
+  #     - .:/app
+  #     - app_node_modules:/app/node_modules
+
 volumes:
   db_data:
     name: business-portal-data
+  # app_node_modules:

@@ -1,16 +1,27 @@
 import { Suspense } from 'react';
+import FilterCategory from '../_components/FilterCategory/FilterCategory';
 import { PublicPostGridWrapper } from '../_components/PublicPostGridWrapper/PublicPostGridWrapper';
+import { fetchCategories } from '../_components/CategoryWrapper/CategoryWrapper';
 import styles from './page.module.css';
 
 type PublicPostSearchParams = {
   page?: string;
   limit?: string;
+  sort?: 'asc' | 'desc';
+  categories?: string | string[];
 }
 
 export default async function Blog({ searchParams }: { searchParams: Promise<PublicPostSearchParams> }) {
   const params = await searchParams;
   const page = parseInt(params.page || '1');
   const limit = parseInt(params.limit || '9');
+  const sort = params.sort || 'desc';
+  const selectedCategories = Array.isArray(params.categories)
+    ? params.categories
+    : params.categories
+      ? [params.categories]
+      : [];
+  const categories = await fetchCategories();
 
    return (
     <div className={styles.pageContainer}>
@@ -20,7 +31,10 @@ export default async function Blog({ searchParams }: { searchParams: Promise<Pub
       <div className={styles.container}>
 
         <div className={styles.filtersContainer}>
-          {/* Filter options with categories */}
+          <FilterCategory
+            categories={categories}
+            selectedCategories={selectedCategories}
+          />
         </div>
 
         <div className={styles.contentContainer}>
@@ -29,6 +43,8 @@ export default async function Blog({ searchParams }: { searchParams: Promise<Pub
               <PublicPostGridWrapper 
                 page={page}
                 limit={limit}
+                sort={sort}
+                categories={selectedCategories}
               />
             </Suspense>
           </div>

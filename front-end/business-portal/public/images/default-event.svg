@@ -1,0 +1,17 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#e5e7eb"/>
+  
+  <!-- Calendar/Event icon -->
+  <rect x="140" y="80" width="120" height="120" fill="none" stroke="#d1d5db" stroke-width="2" rx="8"/>
+  <line x1="155" y1="80" x2="155" y2="60" stroke="#d1d5db" stroke-width="2"/>
+  <line x1="245" y1="80" x2="245" y2="60" stroke="#d1d5db" stroke-width="2"/>
+  <circle cx="155" cy="55" r="5" fill="#d1d5db"/>
+  <circle cx="245" cy="55" r="5" fill="#d1d5db"/>
+  <line x1="140" y1="110" x2="260" y2="110" stroke="#d1d5db" stroke-width="2"/>
+  
+  <!-- "No Image" text -->
+  <text x="200" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="500" fill="#6b7280" text-anchor="middle">
+    Event Image Not Set
+  </text>
+</svg>

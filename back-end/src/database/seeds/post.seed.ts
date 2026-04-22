@@ -48,7 +48,7 @@ export default async function seedPosts(postService: PostService, userAccountSer
             title: 'RESTful API Best Practices',
             content: 'Building RESTful APIs requires following certain conventions and best practices. This includes proper HTTP method usage, status codes, resource naming, and error handling.',
             summary: 'Essential guidelines for designing and implementing robust RESTful APIs.',
-            categoriesNames: ['api', 'backend', 'best-practices', 'web-development']
+            categoriesNames: ['backend', 'web-development']
         },
         {
             coverImageUrl: undefined,
@@ -62,7 +62,7 @@ export default async function seedPosts(postService: PostService, userAccountSer
             title: 'Database Migrations Made Easy',
             content: 'Database migrations are a way to manage database schema changes over time. They allow you to version control your database schema and apply changes systematically across environments.',
             summary: 'Master database migrations to keep your schema changes organized and deployable.',
-            categoriesNames: ['database', 'devops', 'backend', 'best-practices']
+            categoriesNames: ['database', 'backend', 'best-practices']
         },
         {
             coverImageUrl: undefined,
@@ -83,42 +83,42 @@ export default async function seedPosts(postService: PostService, userAccountSer
             title: 'CSS-in-JS Solutions Comparison',
             content: 'CSS-in-JS libraries like styled-components, emotion, and CSS Modules offer different approaches to styling React applications. Each has its own benefits and trade-offs.',
             summary: 'Compare popular CSS-in-JS solutions to choose the best fit for your project.',
-            categoriesNames: ['frontend', 'css', 'react', 'styling']
+            categoriesNames: ['frontend', 'react',]
         },
         {
             coverImageUrl: undefined,
             title: 'Testing Strategies for Node.js',
             content: 'Comprehensive testing is essential for maintaining code quality. Unit tests, integration tests, and e2e tests each serve different purposes in ensuring your application works correctly.',
             summary: 'Implement effective testing strategies for your Node.js applications.',
-            categoriesNames: ['testing', 'nodejs', 'backend', 'quality-assurance']
+            categoriesNames: ['testing', 'nodejs', 'backend']
         },
         {
             coverImageUrl: undefined,
             title: 'Docker for Development Environments',
             content: 'Docker containers provide consistent development environments across different machines. Using Docker Compose, you can orchestrate multiple services needed for your application.',
             summary: 'Streamline your development workflow with Docker and containerization.',
-            categoriesNames: ['devops', 'docker', 'development-tools', 'containerization']
+            categoriesNames: ['docker', 'development-tools', 'containerization']
         },
         {
             coverImageUrl: undefined,
             title: 'Git Workflow Best Practices',
             content: 'Effective use of Git can dramatically improve team collaboration. Understanding branching strategies, commit conventions, and merge practices is essential for modern development teams.',
             summary: 'Adopt Git workflows that enhance team productivity and code quality.',
-            categoriesNames: ['version-control', 'git', 'development-tools', 'best-practices']
+            categoriesNames: ['git', 'development-tools', 'best-practices']
         },
         {
             coverImageUrl: undefined,
             title: 'Microservices Architecture Patterns',
             content: 'Microservices architecture breaks down applications into smaller, independent services. This approach offers scalability and flexibility but also introduces complexity in communication and deployment.',
             summary: 'Understand when and how to implement microservices architecture effectively.',
-            categoriesNames: ['architecture', 'microservices', 'backend', 'scalability']
+            categoriesNames: ['architecture','backend', 'scalability']
         },
         {
             coverImageUrl: undefined,
             title: 'GraphQL vs REST',
             content: 'GraphQL provides a query language for APIs that allows clients to request exactly the data they need. While REST has been the standard, GraphQL offers advantages in certain scenarios.',
             summary: 'Compare GraphQL and REST to choose the right API approach for your needs.',
-            categoriesNames: ['api', 'graphql', 'backend', 'web-development']
+            categoriesNames: ['backend', 'web-development']
         },
         {
             coverImageUrl: undefined,
@@ -139,35 +139,35 @@ export default async function seedPosts(postService: PostService, userAccountSer
             title: 'CI/CD Pipeline Setup',
             content: 'Continuous Integration and Continuous Deployment automate the process of testing and deploying code. Setting up a robust CI/CD pipeline improves development velocity and code quality.',
             summary: 'Automate your deployment process with effective CI/CD pipelines.',
-            categoriesNames: ['devops', 'cicd', 'automation', 'deployment']
+            categoriesNames: ['cicd', 'deployment']
         },
         {
             coverImageUrl: undefined,
             title: 'State Management in React',
             content: 'Managing application state is a critical aspect of React development. Solutions range from built-in Context API to libraries like Redux, Zustand, and Recoil.',
             summary: 'Choose the right state management solution for your React application.',
-            categoriesNames: ['react', 'frontend', 'state-management', 'javascript']
+            categoriesNames: ['react', 'frontend', 'javascript']
         },
         {
             coverImageUrl: undefined,
             title: 'Responsive Web Design Principles',
             content: 'Responsive design ensures your application works well on all devices. Using flexible grids, media queries, and responsive images creates a seamless experience across screen sizes.',
             summary: 'Create web applications that look great on any device or screen size.',
-            categoriesNames: ['frontend', 'css', 'web-development', 'design']
+            categoriesNames: ['frontend', 'web-development', 'design']
         },
         {
             coverImageUrl: undefined,
             title: 'API Rate Limiting and Throttling',
             content: 'Protecting your API from abuse requires implementing rate limiting and throttling. These techniques help prevent overload and ensure fair usage of your resources.',
             summary: 'Implement rate limiting to protect your APIs from abuse and overload.',
-            categoriesNames: ['api', 'backend', 'security', 'performance']
+            categoriesNames: ['backend', 'security', 'performance']
         },
         {
             coverImageUrl: undefined,
             title: 'Logging and Monitoring in Production',
             content: 'Proper logging and monitoring are essential for maintaining healthy production systems. Tools like Winston, Pino, and cloud monitoring services help track application behavior and issues.',
             summary: 'Set up effective logging and monitoring for production applications.',
-            categoriesNames: ['devops', 'monitoring', 'backend', 'production']
+            categoriesNames: ['backend', 'production']
         },
         {
             coverImageUrl: undefined,
@@ -181,21 +181,21 @@ export default async function seedPosts(postService: PostService, userAccountSer
             title: 'WebSocket for Real-Time Communication',
             content: 'WebSockets enable bi-directional communication between client and server. This is essential for real-time features like chat applications, live notifications, and collaborative tools.',
             summary: 'Implement real-time features in your applications using WebSockets.',
-            categoriesNames: ['web-development', 'real-time', 'backend', 'websocket']
+            categoriesNames: ['web-development', 'backend']
         },
         {
             coverImageUrl: undefined,
             title: 'Error Handling Patterns',
             content: 'Proper error handling improves application reliability and user experience. Implementing consistent error handling strategies across your application is a mark of quality software.',
             summary: 'Build robust applications with comprehensive error handling strategies.',
-            categoriesNames: ['backend', 'best-practices', 'programming', 'quality-assurance']
+            categoriesNames: ['backend', 'best-practices', 'programming']
         },
         {
             coverImageUrl: undefined,
             title: 'Environment Configuration Management',
             content: 'Managing configuration across different environments (development, staging, production) requires careful planning. Using environment variables and configuration management tools ensures consistency.',
             summary: 'Manage application configuration effectively across multiple environments.',
-            categoriesNames: ['devops', 'backend', 'configuration', 'best-practices']
+            categoriesNames: ['backend', 'best-practices']
         },
         {
             coverImageUrl: undefined,
@@ -209,28 +209,28 @@ export default async function seedPosts(postService: PostService, userAccountSer
             title: 'Code Review Best Practices',
             content: 'Code reviews are crucial for maintaining code quality and sharing knowledge within teams. Effective code reviews focus on constructive feedback and continuous improvement.',
             summary: 'Improve code quality and team collaboration through effective code reviews.',
-            categoriesNames: ['best-practices', 'development-tools', 'quality-assurance', 'team-collaboration']
+            categoriesNames: ['best-practices', 'development-tools']
         },
         {
             coverImageUrl: undefined,
             title: 'Accessibility in Web Development',
             content: 'Building accessible web applications ensures everyone can use your product. Following WCAG guidelines and using semantic HTML creates inclusive experiences for all users.',
             summary: 'Make your web applications accessible to users of all abilities.',
-            categoriesNames: ['frontend', 'accessibility', 'web-development', 'best-practices']
+            categoriesNames: ['frontend', 'web-development', 'best-practices']
         },
         {
             coverImageUrl: undefined,
             title: 'Technical Debt Management',
             content: 'Technical debt accumulates when shortcuts are taken in development. Managing technical debt requires balancing feature development with code quality improvements.',
             summary: 'Manage and reduce technical debt to maintain long-term code health.',
-            categoriesNames: ['best-practices', 'software-engineering', 'project-management', 'quality-assurance']
+            categoriesNames: ['best-practices']
         },
         {
             coverImageUrl: undefined,
             title: 'Dependency Management and Security',
             content: 'Keeping dependencies up-to-date is crucial for security and performance. Regularly auditing and updating dependencies helps prevent vulnerabilities and ensures access to latest features.',
             summary: 'Keep your applications secure with proper dependency management practices.',
-            categoriesNames: ['security', 'devops', 'best-practices', 'development-tools']
+            categoriesNames: ['security','best-practices', 'development-tools']
         }
     ];
 

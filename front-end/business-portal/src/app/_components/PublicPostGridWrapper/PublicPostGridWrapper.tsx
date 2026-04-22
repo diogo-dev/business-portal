@@ -5,11 +5,23 @@ import styles from './PublicPostGridWrapper.module.css';
 interface PublicPostGridWrapperProps {
   page: number;
   limit: number;
+  sort: 'asc' | 'desc';
+  categories: string[];
 }
 
-async function fetchPublicPosts(page: number, limit: number) {
+async function fetchPublicPosts(page: number, limit: number, sort: string = 'desc', categories: string[] = []) {
   try {
-    const response = await get(`/post?page=${page}&limit=${limit}`);
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+      sort,
+    });
+
+    categories.forEach((categorySlug) => {
+      params.append('categories', categorySlug);
+    });
+
+    const response = await get(`/post?${params.toString()}`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch public posts: ${response.statusText}`);
@@ -21,8 +33,8 @@ async function fetchPublicPosts(page: number, limit: number) {
   }
 }
 
-export async function PublicPostGridWrapper({ page, limit }: PublicPostGridWrapperProps) {
-  const data = await fetchPublicPosts(page, limit);
+export async function PublicPostGridWrapper({ page, limit, sort, categories }: PublicPostGridWrapperProps) {
+  const data = await fetchPublicPosts(page, limit, sort, categories);
   const { posts, meta } = data;
 
   if (!posts || posts.length === 0) {

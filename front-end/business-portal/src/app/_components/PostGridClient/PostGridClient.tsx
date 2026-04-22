@@ -3,7 +3,7 @@
 import { PostGrid } from '../PostGrid/PostGrid';
 import { Post } from '../../_types/post.types';
 import { MetaData } from '../../_types/metadata.type';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface PostGridClientProps {
@@ -28,6 +28,12 @@ export default function PostGridClient({
     router.push(`/manage-post?${params.toString()}`);
   }
 
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', e.target.value);
+    router.push(`/manage-post?${params.toString()}`)
+  }
+
   const handleRefresh = () => {
     // Triggers server component re-fetch
     router.refresh();
@@ -44,6 +50,7 @@ export default function PostGridClient({
       setIsSuccess={setIsSuccess}
       fetchPosts={handleRefresh}
       onPageChange={handlePageChange}
+      onSortChange={handleSortChange}
     />
   );
   
